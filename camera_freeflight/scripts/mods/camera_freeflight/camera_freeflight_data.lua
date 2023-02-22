@@ -17,6 +17,11 @@ mod_data.options = {
       keybind_type    = "function_call",
       function_name   = "toggle_freeflight",
     },
+    {
+      setting_id    = "cf_teleport_player",
+      type          = "checkbox",
+      default_value = false,
+    },
   }
 }
 

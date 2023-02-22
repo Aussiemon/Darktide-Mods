@@ -24,4 +24,10 @@ return {
   cf_toggle_freeflight_description = {
     en = "Keybind to toggle detached camera freeflight.",
   },
+  cf_teleport_player = {
+    en = "Teleport Player to Camera",
+  },
+  cf_teleport_player_description = {
+    en = "Enable/disable whether the player should be teleported to the camera position in freeflight.",
+  },
 }

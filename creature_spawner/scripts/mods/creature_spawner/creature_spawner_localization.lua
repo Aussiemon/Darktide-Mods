@@ -15,7 +15,7 @@ return {
   mod_name = {
     en = "Creature Spawner",
   },
-  mod_descriptionription = {
+  mod_description = {
     en = "Allows you to spawn various units in self-hosted maps that support them.",
   },
   cs_unit_list = {

@@ -5,6 +5,8 @@ local mod = get_mod("hungry_hungry")
 
 local Breeds = require("scripts/settings/breed/breeds")
 
+local bt_minion_conditions_path = "scripts/extension_systems/behavior/utilities/conditions/bt_minion_conditions"
+
 local breed_blacklist = {
   chaos_beast_of_nurgle = false
 }
@@ -102,15 +104,6 @@ local function new_beast_of_nurgle_should_eat(unit, blackboard, scratchpad,
   return true
 end
 
-local function patch_require_store()
-  local require_store = mod:get_require_store(
-    "scripts/extension_systems/behavior/utilities/conditions/bt_minion_conditions"
-  ) or {}
-  for _, instance in pairs(require_store) do
-    instance.beast_of_nurgle_should_eat = new_beast_of_nurgle_should_eat
-  end
-end
-
 local function deepcopy(orig, copies)
   copies = copies or {}
   local orig_type = type(orig)
@@ -134,6 +127,10 @@ end
 
 -- ##########################################################
 -- #################### Hooks ###############################
+
+mod:hook_require(bt_minion_conditions_path, function(instance)
+  instance.beast_of_nurgle_should_eat = new_beast_of_nurgle_should_eat
+end)
 
 mod:hook_safe(CLASS.BtBeastOfNurgleConsumeAction, "init_values", function (self, blackboard)
   set_blackboard_properties(blackboard)
@@ -186,11 +183,6 @@ end)
 -- ##########################################################
 -- ################## Callbacks #############################
 
--- Call when game state changes (e.g. StateLoading -> StateIngame)
-mod.on_game_state_changed = function(status, state)
-  patch_require_store()
-end
-
 -- Call when setting is changed in mod settings
 mod.on_setting_changed = function(setting_name)
   if setting_name == "hh_no_player_conditions" then
@@ -212,7 +204,5 @@ end
 
 -- ##########################################################
 -- ################### Script ###############################
-
-patch_require_store()
 
 -- ##########################################################

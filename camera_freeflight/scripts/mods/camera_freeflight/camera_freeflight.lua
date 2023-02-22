@@ -4,33 +4,62 @@ local mod = get_mod("camera_freeflight")
 -- ################## Variables #############################
 
 local FreeFlightManager = require("scripts/foundation/managers/free_flight/free_flight_manager")
+local PlayerMovement = require("scripts/utilities/player_movement")
+local ScriptViewport = require("scripts/foundation/utilities/script_viewport")
+local ScriptWorld = require("scripts/foundation/utilities/script_world")
 local Views = require("scripts/ui/views/views")
 
+local free_flight_default_input_path = "scripts/foundation/managers/free_flight/free_flight_default_input"
+
 local _freeflight_data = mod:persistent_table("freeflight_data")
+
+local Camera = Camera
+local Managers = Managers
+local Quaternion = Quaternion
+local Network = Network
+local ScriptUnit = ScriptUnit
+local Vector3 = Vector3
+
+mod.settings = mod:persistent_table("settings")
 
 -- ##########################################################
 -- ################## Functions #############################
 
-local toggle_look_input = function()
+local initialize_settings_cache = function()
+  mod.settings["cf_teleport_player"] = mod:get("cf_teleport_player")
+end
+
+local pressed_toggle_look_input = function()
   return false -- Keyboard.pressed(Keyboard.button_index("["))
 end
 
-local teleport_player_to_camera = function()
+local pressed_teleport_player_to_camera = function()
   return false -- Keyboard.pressed(Keyboard.button_index("]"))
 end
 
-local patch_require_store = function()
-  local free_flight_default_input_require_store = mod:get_require_store(
-    "scripts/foundation/managers/free_flight/free_flight_default_input"
-  ) or {}
-  for _, instance in pairs(free_flight_default_input_require_store) do
-    if not instance.toggle_look_input then
-      instance.toggle_look_input = toggle_look_input
-    end
-    if not instance.teleport_player_to_camera then
-      instance.teleport_player_to_camera = teleport_player_to_camera
-    end
-  end
+local is_server = function()
+  return Managers.state and Managers.state.game_session and Managers.state.game_session:is_server()
+end
+
+local teleport_player_to_camera = function(cam, player)
+  local pos = Camera.local_position(cam)
+  local rot = Camera.local_rotation(cam)
+  
+  -- Flat-level position of player relative to camera
+  local offset = { x = -0.8, y = 0.6, z = -1.2 }
+  
+  -- Modifier for z-axis depending on pitch of camera
+  local pitch = math.abs(Quaternion.pitch(rot))
+  local percent_change = pitch / math.pi
+  offset.z = offset.z - ((2 * offset.z) * percent_change)
+  
+  -- Apply offset to get final player position
+  local x = offset.x * Quaternion.right(rot)
+  local y = offset.y * Quaternion.forward(rot)
+  local z = Vector3(0, 0, offset.z)
+  pos = pos + x + y + z
+  
+  PlayerMovement.teleport(player, pos, rot)
 end
 
 mod.use_3p_hub_camera = function(self)
@@ -75,6 +104,29 @@ end
 
 -- ##########################################################
 -- #################### Hooks ###############################
+
+mod:hook_file(free_flight_default_input_path, function(instance)
+  if not instance.toggle_look_input then
+    instance.toggle_look_input = pressed_toggle_look_input
+  end
+  if not instance.teleport_player_to_camera then
+    instance.teleport_player_to_camera = pressed_teleport_player_to_camera
+  end
+end)
+
+mod:hook_safe(CLASS.FreeFlightManager, "_update_camera", function (self, input_, dt_, camera_data)
+  if mod.settings["cf_teleport_player"] and is_server() then
+    local world = Managers.world:world(camera_data.viewport_world_name)
+    local viewport = world and ScriptWorld.global_free_flight_viewport(world)
+    local cam = camera_data.frustum_freeze_camera or viewport and ScriptViewport.camera(viewport)
+    
+    -- Always change player position while flying
+    local player = Managers.player:local_player(1)
+    if cam and player then
+      teleport_player_to_camera(cam, player)
+    end
+  end
+end)
 
 mod:hook(CLASS.FreeFlightDefaultInput, "get", function (func, self, action_name, ...)
   if action_name == "global_toggle" then
@@ -134,8 +186,11 @@ end)
 -- Call when game state changes (e.g. StateLoading -> StateIngame)
 mod.on_game_state_changed = function(status, state)
   _freeflight_data.enable_freeflight = false
+end
 
-  patch_require_store()
+-- Call when setting is changed in mod settings
+mod.on_setting_changed = function(setting_name)
+  mod.settings[setting_name] = mod:get(setting_name)
 end
 
 -- ##########################################################
@@ -148,6 +203,6 @@ Managers.free_flight.STD_MAXIMUM_SPEED = 30
 
 _freeflight_data.enable_freeflight = false
 
-patch_require_store()
+initialize_settings_cache()
 
 -- ##########################################################

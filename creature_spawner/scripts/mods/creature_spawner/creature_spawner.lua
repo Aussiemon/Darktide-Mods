@@ -3,12 +3,32 @@ local mod = get_mod("creature_spawner")
 -- ##########################################################
 -- ################## Variables #############################
 
+local Actor = Actor
+local HEALTH_ALIVE = HEALTH_ALIVE
+local Managers = Managers
+local PhysicsWorld = PhysicsWorld
+local Quaternion = Quaternion
+local ScriptUnit = ScriptUnit
+local Unit = Unit
+local Vector3 = Vector3
+local World = World
+local Wwise = Wwise
+
+local math = math
+local pairs = pairs
+local string = string
+local table = table
+local type = type
+
+
 local Breeds = require("scripts/settings/breed/breeds")
 local MasterItems = require("scripts/backend/master_items")
 local PlayerUnitStatus = require("scripts/utilities/attack/player_unit_status")
 
 local shooting_range_steps_path = "scripts/extension_systems/training_grounds/shooting_range_steps"
 local shooting_range_scenarios_path = "scripts/extension_systems/training_grounds/shooting_range_scenarios"
+
+mod.settings = mod:persistent_table("settings")
 
 mod.breed_name_index = mod.breed_name_index or 1
 
@@ -20,6 +40,19 @@ mod:command("selected_units", "report selected and saved Creature Spawner creatu
 -- ##########################################################
 -- ################## Local Functions #######################
 
+local initialize_settings_cache = function()
+  mod.settings["cs_unit_list"]                               = mod:get("cs_unit_list")
+  mod.settings["cs_selected_unit"]                           = mod:get("cs_selected_unit")
+  mod.settings["cs_saved_unit_one"]                          = mod:get("cs_saved_unit_one")
+  mod.settings["cs_saved_unit_two"]                          = mod:get("cs_saved_unit_two")
+  mod.settings["cs_saved_unit_three"]                        = mod:get("cs_saved_unit_three")
+  mod.settings["cs_unit_side"]                               = mod:get("cs_unit_side")
+  mod.settings["cs_enable_training_grounds_invisibility"]    = mod:get("cs_enable_training_grounds_invisibility")
+  mod.settings["cs_enable_training_grounds_sound_muffler"]   = mod:get("cs_enable_training_grounds_sound_muffler")
+  mod.settings["cs_enable_training_grounds_invulnerability"] = mod:get("cs_enable_training_grounds_invulnerability")
+  mod.settings["cs_enable_training_grounds_respawn"]         = mod:get("cs_enable_training_grounds_respawn")
+end
+
 local is_valid_game_mode = function()
   local game_mode_name = Managers.state and Managers.state.game_mode and Managers.state.game_mode:game_mode_name()
   return game_mode_name and game_mode_name == "shooting_range"
@@ -27,10 +60,6 @@ end
 
 local is_server = function()
   return Managers.state and Managers.state.game_session and Managers.state.game_session:is_server()
-end
-
-local get_unit_spawner = function()
-  return Managers.state and Managers.state.unit_spawner
 end
 
 local get_player = function()
@@ -75,7 +104,7 @@ local position_at_cursor = function(local_player)
       local hit = result[i]
       local hit_actor = hit[4]
       local hit_unit = Actor.unit(hit_actor)
-      local player_unit = get_player_unit() 
+      local player_unit = get_player_unit()
       local ray_hit_self = player_unit and
                    (hit_unit == player_unit)
 
@@ -94,21 +123,26 @@ local build_unit_lists = function()
   
   -- Visit all breed entries
   for breed_name, _ in pairs(Breeds) do
-  
-    -- Check for breed categories
-    local categories = mod.unit_categories[breed_name]
-    if categories then
-      
-      -- Add unit to category breed lists
-      local num_individual_categories = #categories
-      for i = 1, num_individual_categories do
-        table.insert(mod[categories[i] .. "_units"], breed_name)
+    repeat
+      if mod.breed_blacklist[breed_name] then
+        break
       end
-      table.insert(mod["all_units"], breed_name)
-    else
-      mod:info("Unrecognized breed name " .. breed_name)
-      table.insert(mod["all_units"], breed_name)
-    end
+    
+      -- Check for breed categories
+      local categories = mod.unit_categories[breed_name]
+      if categories then
+        
+        -- Add unit to category breed lists
+        local num_individual_categories = #categories
+        for i = 1, num_individual_categories do
+          table.insert(mod[categories[i] .. "_units"], breed_name)
+        end
+        table.insert(mod["all_units"], breed_name)
+      else
+        mod:info("Unrecognized breed name " .. breed_name)
+        table.insert(mod["all_units"], breed_name)
+      end
+    until true
   end
   
   -- Sort breed categories
@@ -119,7 +153,7 @@ local build_unit_lists = function()
 end
 
 local get_selected_breed = function()
-  return (mod[mod:get("cs_unit_list")])[mod.breed_name_index] or "chaos_poxwalker"
+  return (mod[mod.settings["cs_unit_list"]])[mod.breed_name_index] or "chaos_poxwalker"
 end
 
 -- Take an ellipsis of arguments and transform them into a string
@@ -200,8 +234,27 @@ local function remove_unique_buff(unit, buff_name, scenario_data)
   end
 end
 
+local function enemies_loop_start_func(scenario_system, player_, scenario_data_, step_data)
+  local enemy_spawners = scenario_system:get_spawn_group("shooting_range_enemies")
+  local spawned_units = {}
+  local fake_unit = 1
+
+  for _, directional_unit_extension in pairs(enemy_spawners) do
+    local identifier = directional_unit_extension:identifier()
+    local breed_name = string.sub(identifier, 1, string.find(identifier, ":") - 1)
+
+    spawned_units[fake_unit] = {
+      breed_name = breed_name,
+      spawner = directional_unit_extension
+    }
+    fake_unit = fake_unit + 1
+  end
+
+  step_data.units = spawned_units
+end
+
 local function enemies_loop_condition_func(scenario_system, player, scenario_data, step_data, t)
-  if mod:get("cs_enable_training_grounds_invisibility") then
+  if mod.settings["cs_enable_training_grounds_invisibility"] then
     if not unit_has_buff(player.player_unit, "tg_player_unperceivable") then
       add_unique_buff(player.player_unit, "tg_player_unperceivable", scenario_data, t)
     end
@@ -211,7 +264,7 @@ local function enemies_loop_condition_func(scenario_system, player, scenario_dat
     end
   end
   
-  if not mod:get("cs_enable_training_grounds_sound_muffler") then
+  if not mod.settings["cs_enable_training_grounds_sound_muffler"] then
     Wwise.set_state("music_zone", "on")
   else
     Wwise.set_state("music_zone", "shooting_range")
@@ -219,14 +272,14 @@ local function enemies_loop_condition_func(scenario_system, player, scenario_dat
   
   local health_extension = ScriptUnit.has_extension(player.player_unit, "health_system")
   if health_extension then
-    if not mod:get("cs_enable_training_grounds_invulnerability") then
+    if not mod.settings["cs_enable_training_grounds_invulnerability"] then
       health_extension:set_invulnerable(false)
     else
       health_extension:set_invulnerable(true)
     end
   end
   
-  if mod:get("cs_enable_training_grounds_respawn") then
+  if mod.settings["cs_enable_training_grounds_respawn"] then
     local spawned_units = step_data.units
 
     for unit, spawner_data in pairs(spawned_units) do
@@ -250,20 +303,6 @@ local function enemies_loop_condition_func(scenario_system, player, scenario_dat
           spawned_units[new_unit] = spawner_data
         end
       end
-    end
-  end
-end
-
-local function patch_require_store()
-  local steps_require_store = mod:get_require_store(shooting_range_steps_path) or {}
-  for _, store in pairs(steps_require_store) do
-    store.enemies_loop.condition_func = enemies_loop_condition_func
-  end
-
-  local scenarios_require_store = mod:get_require_store(shooting_range_scenarios_path) or {}
-  for _, store in pairs(scenarios_require_store) do
-    if store and store.init and store.init.steps and #store.init.steps == 8 then
-      table.remove(store.init.steps, 3)
     end
   end
 end
@@ -316,14 +355,15 @@ mod.spawn_breed_at_cursor = function(self, breed_name)
   
   local local_player_unit = get_player_unit(local_player)
   if Unit.alive(local_player_unit) then
-    final_rotation = Quaternion.multiply(Unit.local_rotation(local_player_unit, 1), Quaternion(Vector3(0, 0, 1), math.pi))
+    final_rotation = Quaternion.multiply(Unit.local_rotation(local_player_unit, 1),
+                      Quaternion(Vector3(0, 0, 1), math.pi))
   else
     final_rotation = Quaternion(0, 0, 0, 0)
   end
   
   -- Load this unit if the breed is available
   if Breeds[breed_name] then
-    local side_id = 2 --mod:get("cs_unit_side")
+    local side_id = 2 --mod.settings["cs_unit_side"]
     local unit = minion_spawner:spawn_minion(breed_name, final_position, final_rotation, side_id)
     
     if unit then
@@ -337,19 +377,19 @@ mod.spawn_breed_at_cursor = function(self, breed_name)
 end
 
 mod.spawn_selected_unit = function(self)
-  mod:spawn_breed_at_cursor(mod:get("cs_selected_unit"))
+  mod:spawn_breed_at_cursor(mod.settings["cs_selected_unit"])
 end
 
 mod.spawn_saved_unit_one = function(self)
-  mod:spawn_breed_at_cursor(mod:get("cs_saved_unit_one"))
+  mod:spawn_breed_at_cursor(mod.settings["cs_saved_unit_one"])
 end
 
 mod.spawn_saved_unit_two = function(self)
-  mod:spawn_breed_at_cursor(mod:get("cs_saved_unit_two"))
+  mod:spawn_breed_at_cursor(mod.settings["cs_saved_unit_two"])
 end
 
 mod.spawn_saved_unit_three = function(self)
-  mod:spawn_breed_at_cursor(mod:get("cs_saved_unit_three"))
+  mod:spawn_breed_at_cursor(mod.settings["cs_saved_unit_three"])
 end
 
 mod.next_breed = function(self)
@@ -364,7 +404,7 @@ mod.next_breed = function(self)
   repeat
     -- Switch to the next unit
     mod.breed_name_index = mod.breed_name_index + 1
-    if mod.breed_name_index > #(mod[mod:get("cs_unit_list")]) then
+    if mod.breed_name_index > #(mod[mod.settings["cs_unit_list"]]) then
       mod.breed_name_index = 1
     end
     
@@ -397,7 +437,7 @@ mod.previous_breed = function(self)
     -- Switch to the next unit
     mod.breed_name_index = mod.breed_name_index - 1
     if mod.breed_name_index < 1 then
-      mod.breed_name_index = #(mod[mod:get("cs_unit_list")])
+      mod.breed_name_index = #(mod[mod.settings["cs_unit_list"]])
     end
     
     selected_breed = get_selected_breed()
@@ -426,19 +466,22 @@ end
 -- Save the currently-selected unit to the given save slot
 mod.save_unit_slot = function(...)
   
-  local selected_breed = mod:get("cs_selected_unit")
+  local selected_breed = mod.settings["cs_selected_unit"]
   local slot = process_argument_string(...)
   
   if slot == "1" or slot == "one" then
     mod:set("cs_saved_unit_one", selected_breed, false)
+    mod.settings["cs_saved_unit_one"] = selected_breed
     mod:echo("Saved " .. tostring(selected_breed) .. " to slot one.")
     
   elseif slot == "2" or slot == "two" then
     mod:set("cs_saved_unit_two", selected_breed, false)
+    mod.settings["cs_saved_unit_two"] = selected_breed
     mod:echo("Saved " .. tostring(selected_breed) .. " to slot two.")
     
   elseif slot == "3" or slot == "three" then
     mod:set("cs_saved_unit_three", selected_breed, false)
+    mod.settings["cs_saved_unit_three"] = selected_breed
     mod:echo("Saved " .. tostring(selected_breed) .. " to slot three.")
     
   else
@@ -447,14 +490,14 @@ mod.save_unit_slot = function(...)
 end
 
 -- Report selected and saved Creature Spawner creatures
-mod.unit_slots_report = function(...)
+mod.unit_slots_report = function(self)
   
-  local selected_breed = mod:get("cs_selected_unit")
+  local selected_breed = mod.settings["cs_selected_unit"]
   
-  mod:echo("Selected unit: " .. selected_breed or "None")
-  mod:echo("Saved unit slot one: " .. mod:get("cs_saved_unit_one") or "None")
-  mod:echo("Saved unit slot two: " .. mod:get("cs_saved_unit_two") or "None")
-  mod:echo("Saved unit slot three: " .. mod:get("cs_saved_unit_three") or "None")
+  mod:echo("Selected unit: "         .. selected_breed or "None")
+  mod:echo("Saved unit slot one: "   .. mod.settings["cs_saved_unit_one"] or "None")
+  mod:echo("Saved unit slot two: "   .. mod.settings["cs_saved_unit_two"] or "None")
+  mod:echo("Saved unit slot three: " .. mod.settings["cs_saved_unit_three"] or "None")
 end
 
 -- ##########################################################
@@ -498,7 +541,18 @@ end
 -- ##########################################################
 -- #################### Hooks ###############################
 
-mod:hook_origin("MinionSuppressionExtension", "_get_threshold_and_max_value", function (self, ...)
+mod:hook_file(shooting_range_steps_path, function(instance)
+  instance.enemies_loop.start_func = enemies_loop_start_func
+  instance.enemies_loop.condition_func = enemies_loop_condition_func
+end)
+
+mod:hook_file(shooting_range_scenarios_path, function(instance)
+  if instance and instance.init and instance.init.steps and #instance.init.steps == 8 then
+    table.remove(instance.init.steps, 3)
+  end
+end)
+
+mod:hook_origin("MinionSuppressionExtension", "_get_threshold_and_max_value", function (self)
   local threshold = self._suppress_threshold or 9999
   local combat_range = self._behavior_component.combat_range
 
@@ -566,23 +620,28 @@ end)
 
 -- Call when game state changes (e.g. StateLoading -> StateIngame)
 mod.on_game_state_changed = function(status, state)
-  if not mod:get("cs_selected_unit") then
-    mod:set("cs_selected_unit", get_selected_breed(), false)
+  if not mod.settings["cs_selected_unit"] then
+    local breed_name = get_selected_breed()
+    mod:set("cs_selected_unit", breed_name, false)
+    mod.settings["cs_selected_unit"] = breed_name
   end
-  patch_require_store()
 end
 
 -- Call when setting is changed in mod settings
 mod.on_setting_changed = function(setting_name)
+  mod.settings[setting_name] = mod:get(setting_name)
+
   if setting_name == "cs_unit_list" then
     
     mod.breed_name_index = 1
     local breed_name = get_selected_breed()
     mod:set("cs_selected_unit", breed_name, false)
+    mod.settings["cs_selected_unit"] = breed_name
+
     mod:echo(">> " .. tostring(breed_name) .. ".")
     
   elseif setting_name == "cs_selected_unit" then
-    mod:echo(">> " .. tostring(mod:get("cs_selected_unit")) .. ".")
+    mod:echo(">> " .. tostring(mod.settings["cs_selected_unit"]) .. ".")
   end
 end
 
@@ -590,6 +649,6 @@ end
 -- ################### Script ###############################
 
 build_unit_lists()
-patch_require_store()
+initialize_settings_cache()
 
 -- ##########################################################

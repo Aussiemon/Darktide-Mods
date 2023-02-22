@@ -7,6 +7,11 @@ mod.boss_units = {}
 mod.misc_units = {}
 mod.all_units = {}
 
+mod.breed_blacklist = {
+  human = true,
+  ogryn = true,
+}
+
 mod.unit_category_names = {
   "regular",    -- Spawns in all normal missions
   "elite",      -- Elite units
