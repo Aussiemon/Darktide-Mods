@@ -105,7 +105,7 @@ end
 -- ##########################################################
 -- #################### Hooks ###############################
 
-mod:hook_file(free_flight_default_input_path, function(instance)
+mod:hook_require(free_flight_default_input_path, function(instance)
   if not instance.toggle_look_input then
     instance.toggle_look_input = pressed_toggle_look_input
   end

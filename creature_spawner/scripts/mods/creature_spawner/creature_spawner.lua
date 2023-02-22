@@ -541,12 +541,12 @@ end
 -- ##########################################################
 -- #################### Hooks ###############################
 
-mod:hook_file(shooting_range_steps_path, function(instance)
+mod:hook_require(shooting_range_steps_path, function(instance)
   instance.enemies_loop.start_func = enemies_loop_start_func
   instance.enemies_loop.condition_func = enemies_loop_condition_func
 end)
 
-mod:hook_file(shooting_range_scenarios_path, function(instance)
+mod:hook_require(shooting_range_scenarios_path, function(instance)
   if instance and instance.init and instance.init.steps and #instance.init.steps == 8 then
     table.remove(instance.init.steps, 3)
   end
