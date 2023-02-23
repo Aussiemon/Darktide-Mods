@@ -547,7 +547,7 @@ mod:hook_require(shooting_range_steps_path, function(instance)
 end)
 
 mod:hook_require(shooting_range_scenarios_path, function(instance)
-  if instance and instance.init and instance.init.steps and #instance.init.steps == 8 then
+  if instance and instance.init and instance.init.steps and #instance.init.steps == 7 then
     table.remove(instance.init.steps, 3)
   end
 end)
