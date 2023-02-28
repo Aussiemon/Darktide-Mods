@@ -14,8 +14,10 @@
 return {
   mod_name = {
     en = "Sorted Mission Grid",
+    ["zh-cn"] = "任务面板排序",
   },
   mod_description = {
     en = "Sorts the mission board into a horizontal grid and adds more positions.",
+    ["zh-cn"] = "以网格形式水平排列任务面板，留出更多空位。",
   },
 }

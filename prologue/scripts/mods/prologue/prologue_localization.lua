@@ -14,8 +14,10 @@
 return {
   mod_name = {
     en = "Prologue",
+    ["zh-cn"] = "序章",
   },
   mod_description = {
     en = "Use the /prologue command to start the Prologue.",
+    ["zh-cn"] = "使用 /prologue 命令启动序章任务。",
   },
 }
