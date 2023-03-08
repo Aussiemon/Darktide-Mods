@@ -66,22 +66,23 @@ mod:hook_origin(CLASS.CraftingRerollPerkView, "_perform_crafting", function (sel
     self._perk_display_name = perk_display_name
     
     local desired_rarity = mod:get("rur_desired_rarity")
-    if new_perk.rarity >= desired_rarity then
+	local desired_perk = mod:get("rur_desired_perk")
+    if new_perk.rarity >= desired_rarity and (string.match(desired_perk, "Any") or string.match(tostring(perk_display_name), desired_perk)) then
       mod:notify(safe_format("Rarity " .. tostring(desired_rarity) .. " reached in " ..
-                                                  tostring(attempt_counter) .. " attempts."))
+                                                    tostring(attempt_counter) .. " attempts."))
       cancel_operation = false
       attempt_counter = 0
       self:cb_on_perk_selected(nil, nil)
 
     elseif cancel_operation or attempt_counter >= mod:get("rur_max_attempts") then
       mod:notify(safe_format("Last attempt #" .. tostring(attempt_counter) .. ": " .. tostring(perk_display_name)))
-      cancel_operation = false
+	    cancel_operation = false
       attempt_counter = 0
       self:cb_on_perk_selected(nil, nil)
 
     else
       mod:notify(safe_format("#" .. tostring(attempt_counter) .. ": " .. tostring(perk_display_name)))
-      self:_perform_crafting()
+	    self:_perform_crafting()
     end
     -- ## Modded lines end ##
     

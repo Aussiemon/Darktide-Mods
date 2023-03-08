@@ -29,6 +29,36 @@ mod_data.options = {
       default_value   = {},
       function_name   = "cancel_operation"
     },
+	  {
+      setting_id      = "rur_desired_perk",
+      type            = "dropdown",
+      default_value   = "Any",
+      options = {
+        {text = "Any", value = "Any"},
+        {text = "Toughness Regeneration Speed", value = "Toughness Regeneration Speed"},
+        {text = "Block Efficiency", value = "Block Efficiency"},
+        {text = "Stamina Regeneration", value = "Stamina Regeneration"},
+        {text = "Health", value = "Health"},
+        {text = "Toughness", value = "Toughness"},
+        {text = "Combat Ability Regeneration", value = "Combat Ability Regeneration"},
+        {text = "Corruption Resistance", value = "Corruption Resistance"},
+        {text = "Damage Resistance (Gunners)", value = "Damage Resistance (Gunners)"},
+        {text = "Damage Resistance (Snipers)", value = "Damage Resistance (Snipers)"},
+        {text = "Stamina", value = "Stamina"},
+        {text = "Critical Hit Chance", value = "Critical Hit Chance"},
+        {text = "Critical Hit Damage", value = "Critical Hit Damage"},
+        {text = "Flak", value = "Flak"},
+        {text = "Carapace", value = "Carapace"},
+        {text = "Maniacs", value = "Maniacs"},
+        {text = "Unarmoured", value = "Unarmoured"},
+        {text = "Unyielding", value = "Unyielding"},
+        {text = "Infested", value = "Infested"},
+        {text = "Specialists", value = "Specialists"},
+        {text = "Elites", value = "Elites"},
+        {text = "Poxwalkers", value = "Poxwalkers"},
+        {text = "Weak Spot Damage", value = "Weak Spot Damage"},
+	    }
+    },
   }
 }
 
