@@ -3,7 +3,7 @@ local mod = get_mod("reroll_until_rarity")
 local localization_table = {
   mod_name = {
     en = "Reroll-Until-Rarity",
-    ["zh-cn"] = "连续重抽到指定等级",
+    ["zh-cn"] = "自动重抽专长",
   },
   mod_description = {
     en = "Automatically reroll perks until the desired rarity and perk are reached.\n" ..
@@ -36,30 +36,40 @@ local localization_table = {
     ["zh-cn"] = "用于中途取消自动重抽的按键。",
   },
   rur_enable_selected_perk = {
-    en = "Wait for Desired Perk"
+    en = "Wait for Desired Perk",
+    ["zh-cn"] = "等待指定专长",
   },
   rur_enable_selected_perk_description = {
-    en = "Toggle on/off to reroll until the desired perk is obtained."
+    en = "Toggle on/off to reroll until the desired perk is obtained.",
+    ["zh-cn"] = "开关是否等获取到指定专长才停止重抽。",
   },
   rur_selected_perk = {
-    en = "Desired Perk"
+    en = "Desired Perk",
+    ["zh-cn"] = "指定专长",
   },
   rur_selected_perk_description = {
     en = "Select the desired perk. "
          .. "NOTE: The selected perk might not be available for the item you're rerolling. "
-         .. "Reopen the reroll screen after updating."
+         .. "Reopen the reroll screen after updating.",
+    ["zh-cn"] = "选择指定专长。"
+         .. "注意：这里选择的专长可能对重抽的物品无效。"
+         .. "修改此选项后请重新打开精炼界面。",
   },
   rur_any_perk = {
-    en = "Any Perk"
+    en = "Any Perk",
+    ["zh-cn"] = "任意专长",
   },
   rur_any_perk_description = {
-    en = "Select no specific perk."
+    en = "Select no specific perk.",
+    ["zh-cn"] = "不指定任何专长。",
   },
   rur_hush_hadron = {
-    en = "Mute Hadron"
+    en = "Mute Hadron",
+    ["zh-cn"] = "禁言海德昂",
   },
   rur_hush_hadron_description = {
-    en = "Disable Hadron VO commentary while crafting."
+    en = "Disable Hadron VO commentary while crafting.",
+    ["zh-cn"] = "合成时禁用海德昂的对话。",
   },
 }
 
