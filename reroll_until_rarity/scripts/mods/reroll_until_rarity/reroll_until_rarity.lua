@@ -18,8 +18,15 @@ local initialize_settings_cache = function()
   mod.settings["rur_desired_rarity"]       = mod:get("rur_desired_rarity")
   mod.settings["rur_max_attempts"]         = mod:get("rur_max_attempts")
   mod.settings["rur_enable_selected_perk"] = mod:get("rur_enable_selected_perk")
-  mod.settings["rur_selected_perk"]        = mod:get("rur_selected_perk") or "ANY"
   mod.settings["rur_hush_hadron"]          = mod:get("rur_hush_hadron")
+
+  -- Handle reset if saved value stops existing
+  local desired_perk = mod:get("rur_selected_perk")
+  if string.find(mod:localize(desired_perk), "<") then
+    mod:set("rur_selected_perk", "ANY")
+  end
+
+  mod.settings["rur_selected_perk"] = mod:get("rur_selected_perk")
 end
 
 local safe_format = function(str)
