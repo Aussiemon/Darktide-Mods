@@ -77,22 +77,16 @@ local ItemUtils = require("scripts/utilities/items")
 
 local safe_format = function(str)
   local new_str = string.trim(string.gsub(str, "[%%%+0-9%.]", ""))
-  new_str = string.trim(string.gsub(new_str, "Melee%s", ""))
-  new_str = string.trim(string.gsub(new_str, "Ranged%s", ""))
 
   return new_str
 end
 
-local space_to_underscore = function(str)
-  return string.trim(string.gsub(str, "[%s]+", "_"))
-end
-
 local perk_blacklist = {
-  ["Damage"] = true,
-  ["NEW Perk"] = true,
+  ["loc_crafting_upgrade_unknown_perk_description"] = true,
 }
 
-mod.perk_descriptions = {}
+mod.perk_descriptions_by_id = {}
+mod.perk_ids_by_description = {}
 
 -- MasterItems isn't populated at startup right now, so this is disabled.
 --local MasterItems = require("scripts/backend/master_items")
@@ -1654,14 +1648,18 @@ local populate_perk_descriptions = function()
       if item and type(item) == "table" then
 
         -- We don't need any other localization, as the values will change with the game language
-        local localized_description = safe_format(ItemUtils.perk_description(item, 1, 0))
-        if localized_description
-                    and not string.find(localized_description, "<")
-                    and not perk_blacklist[localized_description] then
+        local localization_id = item.description
+        if localization_id then
+          local localized_perk_description = safe_format(ItemUtils.perk_description(item, 1, 0))
+          if localized_perk_description
+                      and not string.find(localized_perk_description, "<")
+                      and not perk_blacklist[localization_id] then
 
-          local item_key = space_to_underscore(localized_description)
-          mod.perk_descriptions[item_key] = localized_description
-          localization_table[item_key] = {en = localized_description}
+            mod.perk_ids_by_description[localized_perk_description] = localization_id
+
+            localization_table[localization_id] = {en = localized_perk_description}
+            localization_table[localization_id .. "_description"] = {en = localization_id}
+          end
         end
       end
     end

@@ -23,8 +23,8 @@ mod_data.options = {
     {
       setting_id      = "rur_max_attempts",
       type            = "numeric",
-      default_value   = 10,
-      range           = {1, 1000},
+      default_value   = 300,
+      range           = {1, 3000},
     },
     {
       setting_id    = "rur_hush_hadron",
@@ -52,16 +52,26 @@ local select_perk_dropdown_widget = {
 }
 
 -- Move descriptions to a sorted array for the dropdown widget
-mod.all_perk_names = {}
-for perk_name, _ in pairs(mod.perk_descriptions) do
-  table.insert(mod.all_perk_names, perk_name)
+mod.all_perk_descriptions = {}
+for localized_description, _ in pairs(mod.perk_ids_by_description) do
+  table.insert(mod.all_perk_descriptions, localized_description)
 end
-table.sort(mod.all_perk_names, function(a, b) return a:upper() < b:upper() end)
+table.sort(
+  mod.all_perk_descriptions, function(a, b)
+    return a:upper() < b:upper()
+  end
+)
 
-for _, perk_name in ipairs(mod.all_perk_names) do
-  table.insert(select_perk_dropdown_widget.options,
-              #select_perk_dropdown_widget.options + 1,
-              {text = perk_name, value = mod.perk_descriptions[perk_name]})
+for _, localized_description in ipairs(mod.all_perk_descriptions) do
+  table.insert(
+    select_perk_dropdown_widget.options,
+    #select_perk_dropdown_widget.options + 1,
+    {
+      -- Display text will be localized, stored value will be localization_id
+      text = mod.perk_ids_by_description[localized_description],
+      value = mod.perk_ids_by_description[localized_description]
+    }
+  )
 end
 table.insert(mod_data.options.widgets, 3, select_perk_dropdown_widget)
 

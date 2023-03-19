@@ -14,13 +14,16 @@ local cancel_operation = false
 -- ##########################################################
 -- ################## Functions #############################
 
-local safe_format = function(str)
-  return string.gsub(str, "%%", "%%%%")
+local initialize_settings_cache = function()
+  mod.settings["rur_desired_rarity"]       = mod:get("rur_desired_rarity")
+  mod.settings["rur_max_attempts"]         = mod:get("rur_max_attempts")
+  mod.settings["rur_enable_selected_perk"] = mod:get("rur_enable_selected_perk")
+  mod.settings["rur_selected_perk"]        = mod:get("rur_selected_perk") or "ANY"
+  mod.settings["rur_hush_hadron"]          = mod:get("rur_hush_hadron")
 end
 
-local safe_find = function(source, pattern)
-  return string.match(string.gsub(source:upper(), "[%(%)]", ""),
-                      string.gsub(pattern:upper(), "[%(%)]", ""))
+local safe_format = function(str)
+  return string.gsub(str, "%%", "%%%%")
 end
 
 mod.reset_operation = function(self)
@@ -30,14 +33,6 @@ end
 
 mod.cancel_operation = function(self)
   cancel_operation = true
-end
-
-local initialize_settings_cache = function()
-  mod.settings["rur_desired_rarity"]       = mod:get("rur_desired_rarity")
-  mod.settings["rur_max_attempts"]         = mod:get("rur_max_attempts")
-  mod.settings["rur_enable_selected_perk"] = mod:get("rur_enable_selected_perk")
-  mod.settings["rur_selected_perk"]        = mod:get("rur_selected_perk") or "ANY"
-  mod.settings["rur_hush_hadron"]          = mod:get("rur_hush_hadron")
 end
 
 -- ##########################################################
@@ -95,12 +90,17 @@ mod:hook_origin(CLASS.CraftingRerollPerkView, "_perform_crafting", function (sel
     if new_perk.rarity >= desired_rarity
                         and (not mod.settings["rur_enable_selected_perk"]
                               or desired_perk == "ANY"
-                              or safe_find(perk_display_name, desired_perk))
+                              or (
+                                -- Compare the unique descriptions of two different localization_ids
+                                mod:localize(perk_item.description) == mod:localize(desired_perk)
+                              )
+                            )
     then
       mod:notify(safe_format("#" .. tostring(attempt_counter) .. ": " .. tostring(perk_display_name)))
       local closing_notification = "Rarity " .. tostring(desired_rarity)
-      if mod.settings["rur_enable_selected_perk"] then
-        closing_notification = closing_notification .. " " .. desired_perk
+
+      if mod.settings["rur_enable_selected_perk"] and desired_perk ~= "ANY" then
+        closing_notification = closing_notification .. " " .. mod:localize(desired_perk)
       end
       mod:notify(safe_format(closing_notification .. " found in " .. tostring(attempt_counter) .. " attempts."))
 
@@ -111,8 +111,9 @@ mod:hook_origin(CLASS.CraftingRerollPerkView, "_perform_crafting", function (sel
     elseif cancel_operation or attempt_counter >= mod.settings["rur_max_attempts"] then
       mod:notify(safe_format("Last attempt #" .. tostring(attempt_counter) .. ": " .. tostring(perk_display_name)))
       local closing_notification = "Rarity " .. tostring(desired_rarity)
-      if mod.settings["rur_enable_selected_perk"] then
-        closing_notification = closing_notification .. " " .. desired_perk
+
+      if mod.settings["rur_enable_selected_perk"] and desired_perk ~= "ANY" then
+        closing_notification = closing_notification .. " " .. mod:localize(desired_perk)
       end
       mod:notify(safe_format(closing_notification .. " was not found in " .. tostring(attempt_counter) .. " attempts."))
 
@@ -121,7 +122,7 @@ mod:hook_origin(CLASS.CraftingRerollPerkView, "_perform_crafting", function (sel
       self:cb_on_perk_selected(nil, nil)
 
     else
-      if (attempt_counter % 6) == 0 then
+      if (attempt_counter % 5) == 0 then
         Managers.event:trigger("event_clear_notifications")
       end
 
@@ -185,13 +186,15 @@ mod:hook_safe(CLASS.ViewElementCraftingRecipe, "present_recipe", function(self, 
 
     if mod:is_enabled() then
       local selected_perk_setting = mod.settings["rur_enable_selected_perk"]
-                                    and not (mod.settings["rur_selected_perk"] == "ANY")
+                                    and mod.settings["rur_selected_perk"] ~= "ANY"
       local button_prefix = mod:localize("rur_desired_rarity") .. ": "
 
       continue_button_widget_content.original_text = button_prefix .. mod.settings["rur_desired_rarity"]
       if selected_perk_setting then
-        continue_button_widget_content.original_text = continue_button_widget_content.original_text
-                                                    .. ", " .. mod.settings["rur_selected_perk"]
+        continue_button_widget_content.original_text =
+                                    continue_button_widget_content.original_text
+                                    .. ", "
+                                    .. mod:localize(mod.settings["rur_selected_perk"])
       end
     else
       continue_button_widget_content.original_text = Utf8.upper(Localize("loc_crafting_reroll_perk_button"))
