@@ -1655,7 +1655,10 @@ local populate_perk_descriptions = function()
                       and not string.find(localized_perk_description, "<")
                       and not perk_blacklist[localization_id] then
 
-            mod.perk_ids_by_description[localized_perk_description] = localization_id
+            local existing_id = mod.perk_ids_by_description[localized_perk_description]
+            if not existing_id or localization_id:upper() < existing_id:upper() then
+              mod.perk_ids_by_description[localized_perk_description] = localization_id
+            end
 
             localization_table[localization_id] = {en = localized_perk_description}
             localization_table[localization_id .. "_description"] = {en = localization_id}
