@@ -236,8 +236,7 @@ mod:hook(CLASS.BotSynchronizerClient, "rpc_add_bot_player", function (func, self
     peer_profiles_json[peer_id] = peer_profiles_json[peer_id] or {}
     peer_profiles_json[peer_id][local_player_id] = new_profile_json
 
-    mod:dtf(new_profile, ("bot_new_profile_" .. tostring(local_player_id)), 10)
-    mod:echo("Modified host-added bot")
+    --mod:debug("Modified host-added bot")
   end
 
   return func(self, channel_id, local_player_id, ...)
@@ -276,8 +275,7 @@ mod:hook(CLASS.PlayerManager, "create_players_from_sync_data", function (
       -- Update the bot profile
       profile_chunks_array[i] = new_profile_chunks
 
-      mod:dtf(new_profile, ("bot_new_profile_" .. tostring(peer_id)), 10)
-      mod:echo("Modified sync-added bot")
+      --mod:debug("Modified sync-added bot")
     until true
   end
 
