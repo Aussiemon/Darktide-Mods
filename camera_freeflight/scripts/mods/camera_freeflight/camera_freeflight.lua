@@ -20,6 +20,22 @@ local Network = Network
 local ScriptUnit = ScriptUnit
 local Vector3 = Vector3
 
+local null_service = {
+  get = function (self, action_name)
+    local input_type = type(self.input:get(action_name))
+
+    if input_type == "number" then
+      return 0
+    elseif input_type == "boolean" then
+      return false
+    elseif input_type == "userdata" then
+      return Vector3.zero()
+    else
+      mod:error("unsupported input type %q for action %q", input_type, action_name)
+    end
+  end
+}
+
 mod.settings = mod:persistent_table("settings")
 
 -- ##########################################################
@@ -143,6 +159,11 @@ mod:hook(CLASS.FreeFlightDefaultInput, "get", function (func, self, action_name,
   end
   
   return func(self, action_name, ...)
+end)
+
+mod:hook_origin(CLASS.FreeFlightDefaultInput, "null_service", function (self)
+  null_service.input = self
+  return null_service
 end)
 
 mod:hook_safe(CLASS.StateGameplay, "on_enter", function (self)
