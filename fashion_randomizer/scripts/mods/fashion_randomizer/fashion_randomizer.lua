@@ -222,6 +222,10 @@ mod:hook_safe(CLASS.GameModeTrainingGrounds, "init", function (self)
   end
 end)
 
+mod:hook(CLASS.ViewElementWeaponStats, "present_item", function (func, ...)
+  return mod:pcall(func, ...)
+end)
+
 -- ##########################################################
 -- ################# Callbacks ##############################
 
