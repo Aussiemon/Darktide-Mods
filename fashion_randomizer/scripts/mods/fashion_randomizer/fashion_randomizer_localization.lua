@@ -3,39 +3,51 @@ local mod = get_mod("fashion_randomizer")
 local localization_table = {
   mod_name = {
     en = "Fashion Randomizer",
+    ["zh-cn"] = "时装随机化",
   },
   fr_equip_keybind = {
     en = "Keybind: Randomize Items",
+    ["zh-cn"] = "快捷键：随机物品",
   },
   fr_equip_keybind_description = {
     en = "Keybind to randomize equipped items in self-hosted lobbies.",
+    ["zh-cn"] = "用于在自己主办的游戏中随机化装备物品的快捷键。",
   },
   fr_equip_command = {
     en = "equip",
   },
   fr_equip_command_description = {
     en = "Randomize your equipped items in self-hosted lobbies.",
+    ["zh-cn"] = "在自己主办的游戏中随机化装备物品。",
   },
   fr_respect_archetypes = {
     en = "Respect Archetypes",
+    ["zh-cn"] = "遵循角色类型",
   },
   fr_respect_archetypes_description = {
     en = "Only equip items that match your character's archetype (e.g. Psyker, Zealot, Ogryn, Veteran).",
+    ["zh-cn"] = "仅装备符合角色类型（灵能者、狂信徒、欧格林、老兵）的物品。",
   },
   fr_slot_setting_prefix = {
     en = "Enable ",
+    ["zh-cn"] = "启用 ",
   },
   fr_slot_setting_description_prefix = {
     en = "Toggle randomizing ",
+    ["zh-cn"] = "开关 ",
   },
   fr_slot_setting_description_suffix = {
     en = " slot on/off.",
+    ["zh-cn"] = " 栏位的随机化。",
   },
 }
 localization_table.mod_description = {
   en = ("Use the /" ..
           localization_table.fr_equip_command.en ..
           " command to randomize your equipped items in self-hosted lobbies."),
+  ["zh-cn"] = ("使用 /" ..
+          localization_table.fr_equip_command.en ..
+          " 命令，在自己主办的游戏中随机化装备的物品。"),
 }
 
 local function format_slot_setting_name(slot_type, locale)

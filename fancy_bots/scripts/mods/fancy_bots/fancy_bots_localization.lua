@@ -3,24 +3,31 @@ local mod = get_mod("fancy_bots")
 local localization_table = {
   mod_name = {
     en = "Fancy Bots",
+    ["zh-cn"] = "酷炫机器人",
   },
   mod_description = {
     en = "Equip bots with proper or randomized gear. Client-side.",
+    ["zh-cn"] = "给机器人装备合适或随机的装饰品。仅客户端可见。",
   },
   fb_randomize = {
     en = "Randomize Gear",
+    ["zh-cn"] = "随机装饰品",
   },
   fb_randomize_description = {
     en = "Randomize bots' headgear, upperbody, and lowerbody.",
+    ["zh-cn"] = "随机选择机器人的头部、上半身、下半身装饰品。",
   },
   fb_slot_setting_prefix = {
     en = "Enable ",
+    ["zh-cn"] = "启用 ",
   },
   fb_slot_setting_description_prefix = {
     en = "Toggle replacement of ",
+    ["zh-cn"] = "开关 ",
   },
   fb_slot_setting_description_suffix = {
     en = " slot on/off.",
+    ["zh-cn"] = " 栏位的替换。",
   },
 }
 
