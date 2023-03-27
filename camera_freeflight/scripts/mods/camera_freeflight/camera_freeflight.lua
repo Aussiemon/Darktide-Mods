@@ -36,6 +36,13 @@ local null_service = {
   end
 }
 
+local null_input_types = {
+  move_right = true,
+  move_left = true,
+  move_forward = true,
+  move_backward = true,
+}
+
 mod.settings = mod:persistent_table("settings")
 
 -- ##########################################################
@@ -121,6 +128,7 @@ end
 -- ##########################################################
 -- #################### Hooks ###############################
 
+-- Custom handlers for look and teleport player
 mod:hook_require(free_flight_default_input_path, function(instance)
   if not instance.toggle_look_input then
     instance.toggle_look_input = pressed_toggle_look_input
@@ -130,6 +138,15 @@ mod:hook_require(free_flight_default_input_path, function(instance)
   end
 end)
 
+-- Restore freeflight in views
+mod:hook_origin(CLASS.FreeFlightManager, "_get_input", function (self)
+  local imgui_manager = Managers.imgui
+  local input = imgui_manager and imgui_manager:using_input() and self._input:null_service() or self._input
+
+  return input
+end)
+
+-- Handle player teleport
 mod:hook_safe(CLASS.FreeFlightManager, "_update_camera", function (self, input_, dt_, camera_data)
   if mod.settings["cf_teleport_player"] and is_server() then
     local world = Managers.world:world(camera_data.viewport_world_name)
@@ -144,6 +161,7 @@ mod:hook_safe(CLASS.FreeFlightManager, "_update_camera", function (self, input_,
   end
 end)
 
+-- Override vanilla toggle and fix missing hotkeys
 mod:hook(CLASS.FreeFlightDefaultInput, "get", function (func, self, action_name, ...)
   if action_name == "global_toggle" then
     if mod:is_in_free_flight() then
@@ -157,26 +175,37 @@ mod:hook(CLASS.FreeFlightDefaultInput, "get", function (func, self, action_name,
   if not self[action_name] then
     return false
   end
-  
+
   return func(self, action_name, ...)
 end)
 
+-- Fix vanilla bug with null service
 mod:hook_origin(CLASS.FreeFlightDefaultInput, "null_service", function (self)
   null_service.input = self
   return null_service
 end)
 
+-- Detach player movement from camera
+mod:hook(CLASS.InputService, "get", function (func, self, action_name, ...)
+  if _freeflight_data.enable_freeflight and null_input_types[action_name] then
+    return 0
+  end
+
+  return func(self, action_name, ...)
+end)
+
+-- Allow freeflight when gameplay starts
 mod:hook_safe(CLASS.StateGameplay, "on_enter", function (self)
   _freeflight_data.ready = true
 end)
 
+-- Prevent freeflight until gameplay starts
 mod:hook_safe(CLASS.StateGameplay, "on_exit", function (self)
   _freeflight_data.ready = false
 end)
 
+-- Handle updating the freeflight manager
 mod:hook_safe(CLASS.StateGame, "update", function (self, dt)
-
-  -- Update the freeflight manager
   if Managers.free_flight then
     local main_t = Managers.time:time("main")
     Managers.free_flight:update(dt, main_t)
@@ -187,6 +216,7 @@ mod:hook_safe(CLASS.StateGame, "update", function (self, dt)
   end
 end)
 
+-- End freeflight when game world is disabled
 mod:hook_safe(CLASS.UIManager, "open_view", function (self, view_name)
   local view_settings = Views[view_name]
   if not view_settings or view_settings.disable_game_world == true then
@@ -194,6 +224,7 @@ mod:hook_safe(CLASS.UIManager, "open_view", function (self, view_name)
   end
 end)
 
+-- End freeflight when game world was disabled
 mod:hook_safe(CLASS.UIManager, "close_view", function (self, view_name)
   local view_settings = Views[view_name]
   if not view_settings or view_settings.disable_game_world == true then
