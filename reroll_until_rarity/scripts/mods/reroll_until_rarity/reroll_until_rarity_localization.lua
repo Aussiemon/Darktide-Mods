@@ -4,48 +4,60 @@ local localization_table = {
   mod_name = {
     en = "Reroll-Until-Rarity",
     ["zh-cn"] = "自动重抽专长",
+    ru = "Reroll-Until-Rarity",
   },
   mod_description = {
     en = "Automatically reroll perks until the desired rarity and perk are reached.\n" ..
     "Does not consider reroll costs, so best used when rerolls are free.",
     ["zh-cn"] = "自动重抽专长，直到达到所需的等级。\n" ..
     "不会考虑重抽费用，所以最好等重抽免费再使用。",
+    ru = "Автоматически перебрасывает перки до тех пор, пока не будет получен желаемый перк и редкость.\n" ..
+    "Не учитывает стоимость повторных бросков, поэтому лучше всего использовать, когда повторные броски бесплатны.",
   },
   rur_desired_rarity = {
     en = "Desired Rarity",
     ["zh-cn"] = "所需等级",
+    ru = "Желаемая редкость",
   },
   rur_desired_rarity_description = {
     en = "Will stop rerolling if this rarity is reached.",
     ["zh-cn"] = "专长达到此等级后，停止重抽。",
+    ru = "Прекратит перебрасывать, когда будет получена эта редкость.",
   },
   rur_max_attempts = {
     en = "Max Attempts",
     ["zh-cn"] = "最大尝试次数",
+    ru = "Максимальное количество попыток",
   },
   rur_max_attempts_description = {
     en = "Will stop rerolling if this number of attempts is reached.",
     ["zh-cn"] = "达到此尝试次数后，停止重抽。",
+    ru = "Прекратит перебрасывать, если будет достигнуто это количество попыток.",
   },
   rur_cancel_keybind = {
     en = "Keybind: Cancel Reroll",
     ["zh-cn"] = "快捷键：取消重抽",
+    ru = "Клавиатура: Отменить перебрасывание",
   },
   rur_cancel_keybind_description = {
     en = "Keybind to cancel automatic rerolling mid-operation.",
     ["zh-cn"] = "用于中途取消自动重抽的按键。",
+    ru = "Клавиша или связка клавиш для отмены автоматического перебрасывания в процессе операции.",
   },
   rur_enable_selected_perk = {
     en = "Wait for Desired Perk",
     ["zh-cn"] = "等待指定专长",
+    ru = "Ждать желаемый перк",
   },
   rur_enable_selected_perk_description = {
     en = "Toggle on/off to reroll until the desired perk is obtained.",
     ["zh-cn"] = "开关是否等获取到指定专长才停止重抽。",
+    ru = "Включите/выключите, чтобы перебрасывать до тех пор, пока не будет получен желаемый перк.",
   },
   rur_selected_perk = {
     en = "Desired Perk",
     ["zh-cn"] = "指定专长",
+    ru = "Желаемый перк",
   },
   rur_selected_perk_description = {
     en = "Select the desired perk. "
@@ -54,22 +66,29 @@ local localization_table = {
     ["zh-cn"] = "选择指定专长。"
          .. "注意：这里选择的专长可能对重抽的物品无效。"
          .. "修改此选项后请重新打开精炼界面。",
+    ru = "Выберите нужный перк. "
+         .. "ПРИМЕЧАНИЕ: Выбранный перк может быть недоступен для предмета, который вы перебрасываете! "
+         .. "Повторно откройте экран перебрасывания после обновления.",
   },
   rur_any_perk = {
     en = "Any Perk",
     ["zh-cn"] = "任意专长",
+    ru = "Любой перк",
   },
   rur_any_perk_description = {
     en = "Select no specific perk.",
     ["zh-cn"] = "不指定任何专长。",
+    ru = "Конкретный перк не выбран.",
   },
   rur_hush_hadron = {
     en = "Mute Hadron",
     ["zh-cn"] = "禁言海德昂",
+    ru = "Заглушить Хадрон",
   },
   rur_hush_hadron_description = {
     en = "Disable Hadron VO commentary while crafting.",
     ["zh-cn"] = "合成时禁用海德昂的对话。",
+    ru = "Отключить комментарии Хадрон во время крафта.",
   },
 }
 
