@@ -13,15 +13,26 @@ local function initialize_settings_cache()
   mod.settings["smg_sort_order"] = mod:get("smg_sort_order")
 end
 
+
 local function mission_sort_asc_func(k1, k2)
+  local t = Managers.time:time("main")
+
+  -- Ensure time-hidden missions are at the end of the sort order
+  if t < k1.start_game_time and t >= k2.start_game_time then
+    return false
+  elseif t >= k1.start_game_time and t < k2.start_game_time then
+    return true
+
   -- Sort by challenge
-  if k1.challenge < k2.challenge then
+  elseif k1.challenge < k2.challenge then
     return true
   elseif k1.challenge == k2.challenge then
+
     -- Sort by resistance
     if k1.resistance < k2.resistance then
       return true
     elseif k1.resistance == k2.resistance then
+
       -- Sort by circumstance or lack of
       local k1_circumstance_value = mod.circumstance_value[k1.circumstance] or 3
       local k2_circumstance_value = mod.circumstance_value[k2.circumstance] or 3
@@ -29,6 +40,7 @@ local function mission_sort_asc_func(k1, k2)
       if k1_circumstance_value < k2_circumstance_value then
         return true
       elseif k1_circumstance_value == k2_circumstance_value then
+
         -- Sort by side mission or lack of
         if (not k1.side_mission) and k2.side_mission then
           return true
@@ -46,14 +58,24 @@ local function mission_sort_asc_func(k1, k2)
 end
 
 local function mission_sort_desc_func(k1, k2)
+  local t = Managers.time:time("main")
+
+  -- Ensure time-hidden missions are at the end of the sort order
+  if t < k1.start_game_time and t >= k2.start_game_time then
+    return false
+  elseif t >= k1.start_game_time and t < k2.start_game_time then
+    return true
+
   -- Sort by challenge
-  if k1.challenge > k2.challenge then
+  elseif k1.challenge > k2.challenge then
     return true
   elseif k1.challenge == k2.challenge then
+
     -- Sort by resistance
     if k1.resistance > k2.resistance then
       return true
     elseif k1.resistance == k2.resistance then
+
       -- Sort by circumstance or lack of
       local k1_circumstance_value = mod.circumstance_value[k1.circumstance] or 3
       local k2_circumstance_value = mod.circumstance_value[k2.circumstance] or 3
@@ -61,6 +83,7 @@ local function mission_sort_desc_func(k1, k2)
       if k1_circumstance_value > k2_circumstance_value then
         return true
       elseif k1_circumstance_value == k2_circumstance_value then
+
         -- Sort by side mission or lack of
         if (not k1.side_mission) and k2.side_mission then
           return false
@@ -78,9 +101,18 @@ local function mission_sort_desc_func(k1, k2)
 end
 
 local function sort_missions(view)
+  local missions = view._backend_data and view._backend_data.missions
+  if not missions then return false end
+
   local is_modified = false
 
-  local missions = view._backend_data.missions
+  -- Show missions that haven't quite started yet
+  local t = Managers.time:time("main")
+  for i = 1, #missions do
+    if missions[i] and t < missions[i].start_game_time then
+      missions[i].start_game_time = t - 1
+    end
+  end
 
   -- Wrapped in a pcall to prevent sort function crashes
   mod:pcall(function()
