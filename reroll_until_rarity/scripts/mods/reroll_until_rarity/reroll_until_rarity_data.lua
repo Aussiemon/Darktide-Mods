@@ -62,16 +62,24 @@ table.sort(
   end
 )
 
+local perk_ids = {}
+
 for _, localized_description in ipairs(mod.all_perk_descriptions) do
-  table.insert(
-    select_perk_dropdown_widget.options,
-    #select_perk_dropdown_widget.options + 1,
-    {
-      -- Display text will be localized, stored value will be localization_id
-      text = mod.perk_ids_by_description[localized_description],
-      value = mod.perk_ids_by_description[localized_description]
-    }
-  )
+  local perk_id = mod.perk_ids_by_description[localized_description]
+  if not perk_ids[perk_id] then
+    table.insert(
+      select_perk_dropdown_widget.options,
+      #select_perk_dropdown_widget.options + 1,
+      {
+        -- Display text will be localized, stored value will be localization_id
+        text = perk_id,
+        value = perk_id
+      }
+    )
+    perk_ids[perk_id] = true
+  else
+    mod:warning(perk_id .. " already associated with " .. localized_description)
+  end
 end
 table.insert(mod_data.options.widgets, 3, select_perk_dropdown_widget)
 
