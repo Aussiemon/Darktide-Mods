@@ -1,5 +1,9 @@
+Author:
 Aussiemon
-Grimalackt
+
+Contributors (alphabetical):
 deluxghost
 DragonPi3
+Grimalackt
 Wobin
+xsSplater
