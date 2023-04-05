@@ -96,7 +96,7 @@ end
 mod.get_player = function(self)
   local player_manager = Managers.player
   local player = player_manager and player_manager:local_player(1)
-  
+
   return player
 end
 
@@ -122,34 +122,34 @@ mod.generate_random_profile = function(self, item_definitions, respect_archetype
     psyker = true,
     ogryn = true
   }
-  
+
   local random_item_names = {
     [Archetypes.veteran] = {},
     [Archetypes.zealot] = {},
     [Archetypes.psyker] = {},
     [Archetypes.ogryn] = {}
   }
-  
+
   local gender = false
   local player = mod:get_player()
   if player then
     local player_profile = player:profile()
     gender = player_profile.gender
   end
-  
+
   local item_definitions_array = {}
   for item_name, item_data in pairs(item_definitions) do
     item_data.name = item_name
     item_definitions_array[#item_definitions_array + 1] = item_data
   end
-  
+
   local num_items = #item_definitions_array
   for archetype, _ in pairs(archetype_names) do
     for _, slot_name in pairs(mod.player_slots) do
-    
+
       local i = 0
       local item_name
-      
+
       while(i < num_items) do
         repeat
           local item_number = math.random(num_items)
@@ -159,35 +159,35 @@ mod.generate_random_profile = function(self, item_definitions, respect_archetype
             local pass_archetype = mod:check_item_table(item.archetypes, archetype, true)
             if respect_archetypes and not pass_archetype then break end
             --mod:debug(item.name .. " archetype")
-            
+
             local breed = archetype == "ogryn" and "ogryn" or "human"
             local pass_breeds = mod:check_item_table(item.breeds, breed, true)
             if not pass_breeds then break end
             --mod:debug(item.name .. " breed")
-            
+
             local pass_slot = mod:check_item_table(item.slots, slot_name, false)
             if not pass_slot then break end
             --mod:debug(item.name .. " slot")
-            
+
             local pass_gender = (not gender) or (not item.genders) or mod:check_item_table(item.genders, gender, true)
             if not pass_gender then break end
             --mod:debug(item.name .. " succeeded with " .. tostring(archetype))
-            
+
             item_name = item.name
           end
         until true
-        
+
         if item_name then
           break
         end
-        
+
         i = i + 1
       end
-      
+
       random_item_names[Archetypes[archetype]][slot_name] = item_name
     end
   end
-  
+
   return random_item_names
 end
 
@@ -224,6 +224,22 @@ end)
 
 mod:hook(CLASS.ViewElementWeaponStats, "present_item", function (func, ...)
   return mod:pcall(func, ...)
+end)
+
+mod:hook(CLASS.PlayerUnitVisualLoadoutExtension, "_unequip_item_from_slot", function (func, self, slot_name, ...)
+  if self._is_server then
+    local equipment = self._equipment
+    local slot = equipment and equipment[slot_name]
+    local item = slot and slot.item
+
+    -- Occurs on the first run of the randomizer in the prologue
+    if not item then
+      mod:warning("Prevented unequip of non-existent item.")
+      return
+    end
+  end
+
+  return func(self, slot_name, ...)
 end)
 
 -- ##########################################################
