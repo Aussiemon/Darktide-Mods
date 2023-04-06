@@ -15,7 +15,7 @@ return {
   mod_name = {
     en = "Camera Freeflight",
     ["zh-cn"] = "自由飞行视角",
-    ru = "Camera Freeflight",
+    ru = "Свободный полёт камеры",
   },
   mod_description = {
     en = "Allows detached camera freeflight.",
@@ -30,7 +30,7 @@ return {
   cf_toggle_freeflight_description = {
     en = "Keybind to toggle detached camera freeflight.",
     ["zh-cn"] = "用于开关自由飞行视角的按键。",
-    ru = "Клавиша или сочетание клавиш для включения/отключения свободного полета камеры.",
+    ru = "Клавиша или сочетание клавиш для включения/отключения свободного полёта камеры.",
   },
   cf_teleport_player = {
     en = "Teleport Player to Camera",
@@ -40,6 +40,6 @@ return {
   cf_teleport_player_description = {
     en = "Enable/disable whether the player should be teleported to the camera position in freeflight.",
     ["zh-cn"] = "在自由飞行视角下，是否应该将玩家传送到视角位置。",
-    ru = "Включение/отключение телепортации игрока к камере в свободном полете.",
+    ru = "Включение/отключение телепортации игрока к камере в свободном полёте.",
   },
 }
