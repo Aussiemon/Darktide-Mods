@@ -20,7 +20,7 @@ return {
   mod_description = {
     en = "Allows detached camera freeflight.",
     ["zh-cn"] = "允许自由飞行视角。",
-    ru = "Позволяет камере свободно летать отдельно от игрока",
+    ru = "Camera Freeflight - Позволяет камере свободно летать отдельно от игрока",
   },
   cf_toggle_freeflight = {
     en = "Keybind: Toggle Freeflight",
