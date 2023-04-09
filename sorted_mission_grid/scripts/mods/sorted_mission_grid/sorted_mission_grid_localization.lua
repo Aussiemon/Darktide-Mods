@@ -15,12 +15,12 @@ return {
   mod_name = {
     en = "Sorted Mission Grid",
     ["zh-cn"] = "任务面板排序",
-    ru = "Sorted Mission Grid",
+    ru = "Отсортированная сетка миссий",
   },
   mod_description = {
     en = "Sorts the mission board into a horizontal grid and adds more positions.",
     ["zh-cn"] = "以网格形式水平排列任务面板，留出更多空位。",
-    ru = "Сортирует миссии по горизонтальной сетке и добавляет больше позиций.",
+    ru = "Sorted Mission Grid - Сортирует миссии по горизонтальной сетке и добавляет больше позиций.",
   },
   smg_auto_refresh = {
     en = "Auto-Refresh",
@@ -29,7 +29,7 @@ return {
   },
   smg_auto_refresh_description = {
     en = "Automatically refresh the mission board order when new missions arrive.",
-    ru = "Автоматическре обновление порядка расположения миссий при поступлении новых.",
+    ru = "Автоматическре обновление порядка расположения миссий, при поступлении новых.",
     ["zh-cn"] = "新任务到来时，自动刷新任务面板。",
   },
   smg_sort_order = {
