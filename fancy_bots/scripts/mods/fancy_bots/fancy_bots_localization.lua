@@ -9,7 +9,7 @@ local localization_table = {
   mod_description = {
     en = "Equip bots with proper or randomized gear. Client-side.",
     ["zh-cn"] = "给机器人装备合适或随机的装饰品。仅客户端可见。",
-    ru = "Экипируйте ботов хорошим или случайным снаряжением. Видно только вам.",
+    ru = "Fancy Bots - Экипируйте ботов хорошим или случайным снаряжением. Видно только вам.",
   },
   fb_randomize = {
     en = "Randomize Gear",
