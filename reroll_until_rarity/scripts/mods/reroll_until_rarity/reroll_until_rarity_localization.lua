@@ -4,14 +4,14 @@ local localization_table = {
   mod_name = {
     en = "Reroll-Until-Rarity",
     ["zh-cn"] = "自动重抽专长",
-    ru = "Reroll-Until-Rarity",
+    ru = "Перебрасывать до редкости",
   },
   mod_description = {
     en = "Automatically reroll perks until the desired rarity and perk are reached.\n" ..
     "Does not consider reroll costs, so best used when rerolls are free.",
     ["zh-cn"] = "自动重抽专长，直到达到所需的等级。\n" ..
     "不会考虑重抽费用，所以最好等重抽免费再使用。",
-    ru = "Автоматически перебрасывает перки до тех пор, пока не будет получен желаемый перк и редкость.\n" ..
+    ru = "Reroll-Until-Rarity - Автоматически перебрасывает перки до тех пор, пока не будет получен желаемый перк и редкость.\n" ..
     "Не учитывает стоимость повторных бросков, поэтому лучше всего использовать, когда повторные броски бесплатны.",
   },
   rur_desired_rarity = {
@@ -22,7 +22,7 @@ local localization_table = {
   rur_desired_rarity_description = {
     en = "Will stop rerolling if this rarity is reached.",
     ["zh-cn"] = "专长达到此等级后，停止重抽。",
-    ru = "Прекратит перебрасывать, когда будет получена эта редкость.",
+    ru = "Перебрасывание прекратится, когда будет получена эта редкость.",
   },
   rur_max_attempts = {
     en = "Max Attempts",
@@ -32,7 +32,7 @@ local localization_table = {
   rur_max_attempts_description = {
     en = "Will stop rerolling if this number of attempts is reached.",
     ["zh-cn"] = "达到此尝试次数后，停止重抽。",
-    ru = "Прекратит перебрасывать, если будет достигнуто это количество попыток.",
+    ru = "Перебрасывание прекратится, если будет достигнуто это количество попыток.",
   },
   rur_cancel_keybind = {
     en = "Keybind: Cancel Reroll",
@@ -88,7 +88,7 @@ local localization_table = {
   rur_hush_hadron_description = {
     en = "Disable Hadron VO commentary while crafting.",
     ["zh-cn"] = "合成时禁用海德昂的对话。",
-    ru = "Отключить комментарии Хадрон во время крафта.",
+    ru = "Отключить комментарии Хадрон во время работы над предметами.",
   },
 }
 
