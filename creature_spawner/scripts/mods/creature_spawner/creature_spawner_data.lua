@@ -64,6 +64,10 @@ mod.unit_categories = {
     "regular",
     "specialist"
   },
+  chaos_spawn = {
+    "regular",
+    "boss"
+  },
   cultist_assault = {
     "regular"
   },

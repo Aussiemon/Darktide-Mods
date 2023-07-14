@@ -558,12 +558,20 @@ mod:hook_origin("MinionSuppressionExtension", "_get_threshold_and_max_value", fu
 
   if type(threshold) == "table" then
     threshold = threshold[combat_range] or 9999
+
+    if type(threshold) == "table" then
+      threshold = Managers.state.difficulty:get_table_entry_by_challenge(threshold) or 9999
+    end
   end
 
   local max_value = self._max_suppress_value or 9999
 
   if type(max_value) == "table" then
     max_value = max_value[combat_range] or 9999
+
+    if type(max_value) == "table" then
+      max_value = Managers.state.difficulty:get_table_entry_by_challenge(max_value) or 9999
+    end
   end
 
   return threshold, max_value
