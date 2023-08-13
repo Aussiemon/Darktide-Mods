@@ -1,133 +1,155 @@
 local mod = get_mod("sorted_mission_grid")
 
 mod.custom_mission_positions = {
-  {
-    100,
-    150,
-    index = 1
-  },
-  {
-    300,
-    150,
-    index = 2
-  },
-  {
-    500,
-    150,
-    index = 3
-  },
-  {
-    700,
-    150,
-    index = 4
-  },
-  {
-    900,
-    150,
-    index = 5
-  },
-  {
-    1100,
-    150,
-    index = 6
-  },
-  {
-    100,
-    350,
-    index = 7
-  },
-  {
-    300,
-    350,
-    index = 8
-  },
-  {
-    500,
-    350,
-    index = 9
-  },
-  {
-    700,
-    350,
-    index = 10
-  },
-  {
-    900,
-    350,
-    index = 11
-  },
-  {
-    1100,
-    350,
-    index = 12
-  },
-  {
-    500,
-    550,
-    index = 13
-  },
-  {
-    700,
-    550,
-    index = 14
-  },
-  {
-    900,
-    550,
-    index = 15
-  },
-  {
-    1100,
-    550,
-    index = 16
-  },
-  {
-    100,
-    750,
-    index = 17
-  },
-  {
-    300,
-    750,
-    index = 18
-  },
-  {
-    500,
-    750,
-    index = 19
-  },
-  {
-    700,
-    750,
-    index = 20
-  },
-  {
-    900,
-    750,
-    index = 21
-  },
-  {
-    1100,
-    750,
-    index = 22
+  normal = {
+    {
+      115,
+      120,
+      index = 1,
+      prefered_danger = 5
+    },
+    {
+      315,
+      120,
+      index = 2,
+      prefered_danger = 5
+    },
+    {
+      515,
+      120,
+      index = 3,
+      prefered_danger = 5
+    },
+    {
+      715,
+      120,
+      index = 4,
+      prefered_danger = 5
+    },
+    {
+      915,
+      120,
+      index = 5,
+      prefered_danger = 5
+    },
+    {
+      1115,
+      120,
+      index = 6,
+      prefered_danger = 5
+    },
+    {
+      115,
+      320,
+      index = 7,
+      prefered_danger = 5
+    },
+    {
+      315,
+      320,
+      index = 8,
+      prefered_danger = 5
+    },
+    {
+      515,
+      320,
+      index = 9,
+      prefered_danger = 5
+    },
+    {
+      715,
+      320,
+      index = 10,
+      prefered_danger = 5
+    },
+    {
+      915,
+      320,
+      index = 11,
+      prefered_danger = 5
+    },
+    {
+      1115,
+      320,
+      index = 12,
+      prefered_danger = 5
+    },
+    {
+      515,
+      520,
+      index = 13,
+      prefered_danger = 5
+    },
+    {
+      715,
+      520,
+      index = 14,
+      prefered_danger = 5
+    },
+    {
+      915,
+      520,
+      index = 15,
+      prefered_danger = 5
+    },
+    {
+      1115,
+      520,
+      index = 16,
+      prefered_danger = 5
+    },
+    {
+      515,
+      720,
+      index = 17,
+      prefered_danger = 5
+    },
+    {
+      715,
+      720,
+      index = 18,
+      prefered_danger = 5
+    },
+    {
+      915,
+      720,
+      index = 19,
+      prefered_danger = 5
+    },
+    {
+      1115,
+      720,
+      index = 20,
+      prefered_danger = 5
+    },
+    flash_mission_position = {
+      115,
+      540
+    },
+    quickplay_mission_position = {
+      115,
+      720
+    },
+    custom = true,
   }
 }
+mod.custom_mission_positions.auric = mod.custom_mission_positions.normal
 
 mod.circumstance_value = {
   assault_01 = 14,
   darkness_01 = 15,
   darkness_hunting_grounds_01 = 29,
   darkness_less_resistance_01 = 3,
-  darkness_more_resistance_01 = 34,
+  darkness_more_resistance_01 = 35,
   default = 8,
   dummy_less_resistance_01 = 1,
-  dummy_more_resistance_01 = 33,
+  dummy_more_resistance_01 = 34,
   ember_01 = 19,
   gas_01 = 18,
   heretical_disruption_01 = 16,
   hunting_grounds_01 = 17,
   hunting_grounds_less_resistance_01 = 4,
-  hunting_grounds_more_resistance_01 = 35,
+  hunting_grounds_more_resistance_01 = 36,
   less_resistance_01 = 2,
   min_challenge_max_resistance_01 = 6,
   min_resistance_max_challenge_01 = 5,
@@ -145,12 +167,13 @@ mod.circumstance_value = {
   speedrun_challenge_01 = 28,
   toxic_gas_01 = 20,
   ventilation_purge_01 = 10,
+  ventilation_purge_more_resistance_01 = 33,
   ventilation_purge_with_snipers_01 = 30,
   ventilation_purge_with_snipers_less_resistance_01 = 7,
-  ventilation_purge_with_snipers_more_resistance_01 = 36,
+  ventilation_purge_with_snipers_more_resistance_01 = 37,
   waves_of_specials_01 = 31,
   waves_of_specials_less_resistance_01 = 9,
-  waves_of_specials_more_resistance_01 = 37,
+  waves_of_specials_more_resistance_01 = 38,
 }
 
 local mod_data = {
