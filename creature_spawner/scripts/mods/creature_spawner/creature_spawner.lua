@@ -333,6 +333,9 @@ mod.deepcopy = function(self, orig, copies)
 end
 
 mod.spawn_breed_at_cursor = function(self, breed_name)
+  if Managers.ui:chat_using_input() then
+    return
+  end
   if not is_server() then
     return
   end
@@ -393,6 +396,9 @@ mod.spawn_saved_unit_three = function(self)
 end
 
 mod.next_breed = function(self)
+  if Managers.ui:chat_using_input() then
+    return
+  end
   if not is_server() then
     return
   end
@@ -425,6 +431,9 @@ mod.next_breed = function(self)
 end
 
 mod.previous_breed = function(self)
+  if Managers.ui:chat_using_input() then
+    return
+  end
   if not is_server() then
     return
   end
@@ -457,6 +466,9 @@ mod.previous_breed = function(self)
 end
 
 mod.despawn_units = function(self)
+  if Managers.ui:chat_using_input() then
+    return
+  end
   if is_server() and is_valid_game_mode() and Managers.state.minion_spawn then
     Managers.state.minion_spawn:delete_units()
     mod:echo("Despawning all units.")
@@ -504,6 +516,9 @@ end
 -- ################## Grim's Utilities ######################
 
 mod.heal_player = function(self)
+  if Managers.ui:chat_using_input() then
+    return
+  end
   local local_player_unit = get_player_unit()
   if local_player_unit and is_valid_game_mode() then
     local health_extension = ScriptUnit.has_extension(local_player_unit, "health_system")
@@ -513,6 +528,9 @@ mod.heal_player = function(self)
 end
 
 mod.add_toughness = function(self)
+  if Managers.ui:chat_using_input() then
+    return
+  end
   local local_player_unit = get_player_unit()
   if local_player_unit and is_valid_game_mode() then
     local toughness_extension = ScriptUnit.has_extension(local_player_unit, "toughness_system")
@@ -523,6 +541,9 @@ mod.add_toughness = function(self)
 end
 
 mod.assist_player = function(self)
+  if Managers.ui:chat_using_input() then
+    return
+  end
   local local_player_unit = get_player_unit()
   if local_player_unit and is_valid_game_mode() then
     local unit_data_extension = ScriptUnit.has_extension(local_player_unit, "unit_data_system")

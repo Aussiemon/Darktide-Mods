@@ -45,6 +45,9 @@ local setup_profiles = function()
 end
 
 mod.next_bot = function(self, silent)
+  if Managers.ui:chat_using_input() then
+    return
+  end
 
   -- Check for initialization
   if not bot_profile_names then
@@ -74,6 +77,9 @@ mod.next_bot = function(self, silent)
 end
 
 mod.spawn_bot = function(self)
+  if Managers.ui:chat_using_input() then
+    return
+  end
 
   -- Check for initialization
   if not bot_profile_names then
@@ -115,6 +121,9 @@ mod.spawn_bot = function(self)
 end
 
 mod.despawn_bot = function(self)
+  if Managers.ui:chat_using_input() then
+    return
+  end
 
   local is_server = Managers.state and Managers.state.game_session and Managers.state.game_session:is_server()
   if is_server then

@@ -114,6 +114,9 @@ mod.set_3p = function(self, enabled)
 end
 
 mod.toggle_freeflight = function(self)
+  if Managers.ui:chat_using_input() then
+    return
+  end
   _freeflight_data.enable_freeflight = not _freeflight_data.enable_freeflight
 end
 
