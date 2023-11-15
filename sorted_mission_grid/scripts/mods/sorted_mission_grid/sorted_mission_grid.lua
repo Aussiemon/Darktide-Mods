@@ -151,7 +151,7 @@ local function clear_mission_board(view)
   view:_set_selected_quickplay()
 
   local mission_widgets = view._mission_widgets
-  for i = #mission_widgets, 0, -1 do
+  for i = #mission_widgets, 1, -1 do
     local widget = mission_widgets[i]
 
     if widget and not widget.content.exit_anim_id then
@@ -259,6 +259,11 @@ mod:hook_safe(CLASS.MissionBoardView, "_callback_mission_widget_exit_done", func
 
     self:_join_mission_data()
   end
+end)
+
+-- Handle potential crashes when removing widgets
+mod:hook(CLASS.MissionBoardView, "_destroy_mission_widget", function (func, self, widget, ...)
+  return mod:pcall(func, self, widget, ...)
 end)
 
 -- ##########################################################
