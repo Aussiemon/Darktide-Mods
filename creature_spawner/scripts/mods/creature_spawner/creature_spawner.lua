@@ -559,6 +559,16 @@ mod.assist_player = function(self)
   end
 end
 
+mod.toggle_invisibility = function()
+  mod.settings["cs_enable_training_grounds_invisibility"] =
+    not mod.settings["cs_enable_training_grounds_invisibility"]
+end
+
+mod.toggle_invulnerability = function ()
+  mod.settings["cs_enable_training_grounds_invulnerability"] =
+    not mod.settings["cs_enable_training_grounds_invulnerability"]
+end
+
 -- ##########################################################
 -- #################### Hooks ###############################
 

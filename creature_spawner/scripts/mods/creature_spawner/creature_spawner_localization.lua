@@ -228,4 +228,16 @@ return {
     en = "Choose the keybinding that gets the player out of a disabled state in the Training Grounds.",
     ["zh-cn"] = "选择用于在训练场内解除玩家被控状态的按键。",
   },
+  cs_enable_training_grounds_invisibility_keybind = {
+    en = "Keybind: Toggle Player Invisibility"
+  },
+  cs_enable_training_grounds_invisibility_keybind_description = {
+    en = "Choose the keybinding that toggles invisibility in the Training Grounds."
+  },
+  cs_enable_training_grounds_invulnerability_keybind = {
+    en = "Keybind: Toggle Player Invulnerability"
+  },
+  cs_enable_training_grounds_invulnerability_keybind_description = {
+    en = "Choose the keybinding that toggles invulnerability in the Training Grounds."
+  },
 }
