@@ -560,13 +560,15 @@ mod.assist_player = function(self)
 end
 
 mod.toggle_invisibility = function()
-  mod.settings["cs_enable_training_grounds_invisibility"] =
-    not mod.settings["cs_enable_training_grounds_invisibility"]
+  local new_state = not mod.settings["cs_enable_training_grounds_invisibility"]
+  mod.settings["cs_enable_training_grounds_invisibility"] = new_state
+  mod:echo("Invisibility: " .. (new_state and "on" or "off"))
 end
 
 mod.toggle_invulnerability = function ()
-  mod.settings["cs_enable_training_grounds_invulnerability"] =
-    not mod.settings["cs_enable_training_grounds_invulnerability"]
+  local new_state = not mod.settings["cs_enable_training_grounds_invulnerability"]
+  mod.settings["cs_enable_training_grounds_invulnerability"] = new_state
+  mod:echo("Invulnerability: " .. (new_state and "on" or "off"))
 end
 
 -- ##########################################################
