@@ -20,6 +20,9 @@ local string = string
 local table = table
 local type = type
 
+local rapid_cooldown_enabled = false
+local default_player_abilities = mod:persistent_table("default_player_abilities", {})
+local player_abilities
 
 local Breeds = require("scripts/settings/breed/breeds")
 local MasterItems = require("scripts/backend/master_items")
@@ -559,6 +562,24 @@ mod.assist_player = function(self)
   end
 end
 
+mod.toggle_rapid_cooldown = function ()
+  for _, ability in pairs(mod.ability_names) do
+    if rapid_cooldown_enabled then
+      if default_player_abilities[ability].cooldown then
+        player_abilities[ability].cooldown = default_player_abilities[ability].cooldown
+      end
+      rapid_cooldown_enabled = false
+    else
+      if default_player_abilities[ability].cooldown then
+        player_abilities[ability].cooldown = 1
+      end
+      rapid_cooldown_enabled = true
+    end
+  end
+
+  mod:echo("Rapid Ability Cooldown: " .. (rapid_cooldown_enabled and "on" or "off"))
+end
+
 -- ##########################################################
 -- #################### Hooks ###############################
 
@@ -642,6 +663,12 @@ mod:hook("MinionVisualLoadoutExtension", "init", function (func, self, extension
   cleaned_extension_init_data.inventory.slots = cleaned_inventory_slots
 
   return func(self, extension_init_context, unit, cleaned_extension_init_data, ...)
+end)
+
+mod:hook_require("scripts/settings/ability/player_abilities/player_abilities", function(_player_abilities)
+	default_player_abilities = table.clone(_player_abilities)
+	table.set_readonly(default_player_abilities)
+	player_abilities = _player_abilities
 end)
 
 -- ##########################################################

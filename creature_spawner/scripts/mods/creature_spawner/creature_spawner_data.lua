@@ -144,6 +144,44 @@ mod.unit_categories = {
   },
 }
 
+mod.ability_names = {
+	"ogryn_charge",
+	"ogryn_charge_bleed",
+	"ogryn_charge_cooldown_reduction",
+	"ogryn_charge_damage",
+	"ogryn_charge_increased_distance",
+	"ogryn_grenade_box",
+	"ogryn_grenade_box_cluster",
+	"ogryn_grenade_frag",
+	"ogryn_grenade_friend_rock",
+	"ogryn_ranged_stance",
+	"ogryn_taunt_shout",
+	"psyker_chain_lightning",
+	"psyker_discharge_shout",
+	"psyker_force_field",
+	"psyker_force_field_dome",
+	"psyker_force_field_increased_charges",
+	"psyker_overcharge_stance",
+	"psyker_psychic_fortress",
+	"psyker_psychic_fortress_duration_increased",
+	"psyker_smite",
+	"psyker_throwing_knives",
+	"veteran_combat_ability_shout",
+	"veteran_combat_ability_stance",
+	"veteran_combat_ability_stealth",
+	"veteran_frag_grenade",
+	"veteran_krak_grenade",
+	"veteran_smoke_grenade",
+	"zealot_fire_grenade",
+	"zealot_invisibility",
+	"zealot_invisibility_improved",
+	"zealot_relic",
+	"zealot_shock_grenade",
+	"zealot_targeted_dash",
+	"zealot_targeted_dash_improved",
+	"zealot_throwing_knives",
+}
+
 local mod_data = {
   name = mod:localize("mod_name"),
   description = mod:localize("mod_description"),
@@ -201,6 +239,14 @@ mod_data.options = {
       ["default_value"] = true -- Default first option is enabled. In this case true
     },
     
+    { -- Keybind to set rapid ability cooldown
+      ["setting_id"] = "cs_enable_training_grounds_rapid_cooldown_keybind",
+      ["type"] = "keybind",
+      ["keybind_trigger"] = "pressed",
+      ["keybind_type"] = "function_call",
+      ["default_value"] = {},
+      ["function_name"] = "toggle_rapid_cooldown"
+    },
     { -- Keybind for spawning units
       ["setting_id"] = "cs_spawn_keybind",
       ["type"] = "keybind",

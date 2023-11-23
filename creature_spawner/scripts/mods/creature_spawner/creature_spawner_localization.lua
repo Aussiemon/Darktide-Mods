@@ -228,4 +228,10 @@ return {
     en = "Choose the keybinding that gets the player out of a disabled state in the Training Grounds.",
     ["zh-cn"] = "选择用于在训练场内解除玩家被控状态的按键。",
   },
+  cs_enable_training_grounds_rapid_cooldown_keybind = {
+    en = "Keybind: Rapid Ability Cooldown"
+  },
+  cs_enable_training_grounds_rapid_cooldown_keybind_description = {
+    en = "Choose the keybinding that toggles Rapid Ability Cooldown (1 second)"
+  },
 }
