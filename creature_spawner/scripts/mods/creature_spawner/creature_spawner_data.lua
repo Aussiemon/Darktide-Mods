@@ -299,6 +299,14 @@ mod_data.options = {
       ["default_value"] = {},
       ["function_name"] = "assist_player"
     },
+    { -- Keybind to reset combat ability cooldown
+      ["setting_id"] = "cs_reset_combat_ability_cooldown_keybind",
+      ["type"] = "keybind",
+      ["keybind_trigger"] = "pressed",
+      ["keybind_type"] = "function_call",
+      ["default_value"] = {},
+      ["function_name"] = "reset_combat_ability_cooldown"
+    },
   }
 }
 
