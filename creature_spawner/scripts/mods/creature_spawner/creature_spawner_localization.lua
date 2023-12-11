@@ -286,6 +286,12 @@ return {
     ["zh-cn"] = "选择用于在训练场内解除玩家被控状态的按键。",
     ru = "Выберите комбинацию клавиш или клавишу, при нажатии на которую игрок будет поднят, если он выведен из строя на Стрельбище.",
   },
+  cs_reset_combat_ability_cooldown_keybind = {
+    en = "Keybind: Reset Combat Ability Cooldown"
+  },
+  cs_reset_combat_ability_cooldown_keybind_description = {
+    en = "Choose the keybinding that resets the Combat Ability Cooldown in the Training Grounds."
+  },
   cs_enable_training_grounds_invisibility_keybind = {
     en = "Keybind: Toggle Player Invisibility"
   },

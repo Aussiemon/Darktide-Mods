@@ -559,6 +559,14 @@ mod.assist_player = function(self)
   end
 end
 
+mod.reset_combat_ability_cooldown = function()
+  local local_player_unit = get_player_unit()
+  if local_player_unit and is_valid_game_mode() then
+    local ability_extension = ScriptUnit.has_extension(local_player_unit, "ability_system")
+    ability_extension:reduce_ability_cooldown_percentage("combat_ability", 1)
+  end
+end
+
 mod.toggle_invisibility = function()
   local new_state = not mod.settings["cs_enable_training_grounds_invisibility"]
   mod.settings["cs_enable_training_grounds_invisibility"] = new_state
