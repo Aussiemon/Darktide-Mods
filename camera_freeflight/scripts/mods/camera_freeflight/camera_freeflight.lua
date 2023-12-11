@@ -44,6 +44,14 @@ local pressed_teleport_player_to_camera = function()
   return false -- Keyboard.pressed(Keyboard.button_index("]"))
 end
 
+local pressed_roll_left = function()
+  return 0 -- xbox_controller_right_shoulder
+end
+
+local pressed_roll_right = function()
+  return 0 -- xbox_controller_left_shoulder
+end
+
 local is_server = function()
   return Managers.state and Managers.state.game_session and Managers.state.game_session:is_server()
 end
@@ -130,6 +138,12 @@ mod:hook_require(free_flight_default_input_path, function(instance)
   end
   if not instance.teleport_player_to_camera then
     instance.teleport_player_to_camera = pressed_teleport_player_to_camera
+  end
+  if not instance.roll_left then
+    instance.roll_left = pressed_roll_left
+  end
+  if not instance.roll_right then
+    instance.roll_right = pressed_roll_right
   end
 end)
 
