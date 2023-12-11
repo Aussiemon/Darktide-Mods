@@ -290,7 +290,7 @@ return {
     en = "Keybind: Reset Combat Ability Cooldown"
   },
   cs_reset_combat_ability_cooldown_keybind_description = {
-    en = "Choose the keybinding that resets the Combat Ability Cooldown in the Training Grounds"
+    en = "Choose the keybinding that resets the Combat Ability Cooldown in the Training Grounds."
   },
   cs_enable_training_grounds_invisibility_keybind = {
     en = "Keybind: Toggle Player Invisibility"
