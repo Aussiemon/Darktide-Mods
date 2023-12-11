@@ -562,9 +562,8 @@ end
 mod.reset_combat_ability_cooldown = function()
   local local_player_unit = get_player_unit()
   if local_player_unit and is_valid_game_mode() then
-    local ability_extension = ScriptUnit.extension(local_player_unit, "ability_system")
+    local ability_extension = ScriptUnit.has_extension(local_player_unit, "ability_system")
     ability_extension:reduce_ability_cooldown_percentage("combat_ability", 1)
-    mod:echo("Combat ability reset")
   end
 end
 
