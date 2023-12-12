@@ -287,21 +287,27 @@ return {
     ru = "Выберите комбинацию клавиш или клавишу, при нажатии на которую игрок будет поднят, если он выведен из строя на Стрельбище.",
   },
   cs_reset_combat_ability_cooldown_keybind = {
-    en = "Keybind: Reset Combat Ability Cooldown"
+    en = "Keybind: Reset Combat Ability Cooldown",
+    ["zh-cn"] = "快捷键：重置主动技能冷却",
   },
   cs_reset_combat_ability_cooldown_keybind_description = {
-    en = "Choose the keybinding that resets the Combat Ability Cooldown in the Training Grounds."
+    en = "Choose the keybinding that resets the Combat Ability Cooldown in the Training Grounds.",
+    ["zh-cn"] = "选择用于在训练场内重置主动技能冷却的快捷键。",
   },
   cs_enable_training_grounds_invisibility_keybind = {
-    en = "Keybind: Toggle Player Invisibility"
+    en = "Keybind: Toggle Player Invisibility",
+    ["zh-cn"] = "快捷键：开关玩家隐身",
   },
   cs_enable_training_grounds_invisibility_keybind_description = {
-    en = "Choose the keybinding that toggles invisibility in the Training Grounds."
+    en = "Choose the keybinding that toggles invisibility in the Training Grounds.",
+    ["zh-cn"] = "选择用于在训练场内开关玩家隐身的快捷键。",
   },
   cs_enable_training_grounds_invulnerability_keybind = {
-    en = "Keybind: Toggle Player Invulnerability"
+    en = "Keybind: Toggle Player Invulnerability",
+    ["zh-cn"] = "快捷键：开关玩家无敌",
   },
   cs_enable_training_grounds_invulnerability_keybind_description = {
-    en = "Choose the keybinding that toggles invulnerability in the Training Grounds."
+    en = "Choose the keybinding that toggles invulnerability in the Training Grounds.",
+    ["zh-cn"] = "选择用于在训练场内开关玩家无敌的快捷键。",
   },
 }
