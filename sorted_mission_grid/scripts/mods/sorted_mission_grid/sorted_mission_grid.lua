@@ -178,6 +178,16 @@ local function set_special_widget_positions(view, board_type)
     view._mission_type_selection_widget.offset[1] = 0
     view._mission_type_selection_widget.offset[2] = custom_positions.quickplay_mission_position[2] + 80
   end
+
+  if view._widgets_by_name.story_mission_view_button_frame then
+    view._widgets_by_name.story_mission_view_button_frame.offset[1] = custom_positions.quickplay_mission_position[1] + 710
+    view._widgets_by_name.story_mission_view_button_frame.offset[2] = 0
+  end
+
+  if view._widgets_by_name.story_mission_view_button then
+    view._widgets_by_name.story_mission_view_button.offset[1] = custom_positions.quickplay_mission_position[1] + 710
+    view._widgets_by_name.story_mission_view_button.offset[2] = 0
+  end
 end
 
 mod.queue_reset_board = function(self)
