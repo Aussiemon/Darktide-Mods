@@ -140,7 +140,7 @@ mod.unit_categories = {
   },
   renegade_sniper = {
     "regular",
-    "elite"
+    "specialist"
   },
 }
 
