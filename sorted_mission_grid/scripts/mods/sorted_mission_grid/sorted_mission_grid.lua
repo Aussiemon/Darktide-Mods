@@ -40,8 +40,13 @@ local function mission_sort_asc_func(k1, k2)
     elseif k1.resistance == k2.resistance then
 
       -- Sort by circumstance or lack of
-      local k1_circumstance_value = mod.circumstance_value[k1.circumstance] or 3
-      local k2_circumstance_value = mod.circumstance_value[k2.circumstance] or 3
+      local default_circumstance_value = mod.circumstance_value["default"]
+      local k1_circumstance_value = mod.circumstance_value[k1.circumstance]
+          or (k1.circumstance and default_circumstance_value + 1)
+          or default_circumstance_value
+      local k2_circumstance_value = mod.circumstance_value[k2.circumstance]
+          or (k2.circumstance and default_circumstance_value + 1)
+          or default_circumstance_value
 
       if k1_circumstance_value < k2_circumstance_value then
         return true
@@ -89,8 +94,13 @@ local function mission_sort_desc_func(k1, k2)
     elseif k1.resistance == k2.resistance then
 
       -- Sort by circumstance or lack of
-      local k1_circumstance_value = mod.circumstance_value[k1.circumstance] or 3
-      local k2_circumstance_value = mod.circumstance_value[k2.circumstance] or 3
+      local default_circumstance_value = mod.circumstance_value["default"]
+      local k1_circumstance_value = mod.circumstance_value[k1.circumstance]
+          or (k1.circumstance and default_circumstance_value + 1)
+          or default_circumstance_value
+      local k2_circumstance_value = mod.circumstance_value[k2.circumstance]
+          or (k2.circumstance and default_circumstance_value + 1)
+          or default_circumstance_value
 
       if k1_circumstance_value > k2_circumstance_value then
         return true
