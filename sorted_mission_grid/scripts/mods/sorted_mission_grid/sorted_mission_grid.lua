@@ -166,27 +166,34 @@ end
 local function set_special_widget_positions(view, board_type)
   local custom_positions = mod.custom_mission_positions[board_type or "normal"]
 
-  view._quickplay_widget.offset[1] = custom_positions.quickplay_mission_position[1]
-  view._quickplay_widget.offset[2] = custom_positions.quickplay_mission_position[2]
+  if view._quickplay_widget then
+    local widget = view._quickplay_widget
+    widget.offset[1] = custom_positions.quickplay_mission_position[1]
+    widget.offset[2] = custom_positions.quickplay_mission_position[2]
+  end
 
   if view._flash_mission_widget then
-    view._flash_mission_widget.offset[1] = custom_positions.flash_mission_position[1]
-    view._flash_mission_widget.offset[2] = custom_positions.flash_mission_position[2]
+    local widget = view._flash_mission_widget
+    widget.offset[1] = custom_positions.flash_mission_position[1]
+    widget.offset[2] = custom_positions.flash_mission_position[2]
   end
 
   if view._mission_type_selection_widget then
-    view._mission_type_selection_widget.offset[1] = 0
-    view._mission_type_selection_widget.offset[2] = custom_positions.quickplay_mission_position[2] + 80
+    local widget = view._mission_type_selection_widget
+    widget.offset[1] = custom_positions.mission_type_selection_position[1]
+    widget.offset[2] = custom_positions.mission_type_selection_position[2]
   end
 
   if view._widgets_by_name.story_mission_view_button_frame then
-    view._widgets_by_name.story_mission_view_button_frame.offset[1] = custom_positions.quickplay_mission_position[1] + 710
-    view._widgets_by_name.story_mission_view_button_frame.offset[2] = 0
+    local widget = view._widgets_by_name.story_mission_view_button_frame
+    widget.offset[1] = custom_positions.story_mission_view_frame_position[1]
+    widget.offset[2] = custom_positions.story_mission_view_frame_position[2]
   end
 
   if view._widgets_by_name.story_mission_view_button then
-    view._widgets_by_name.story_mission_view_button.offset[1] = custom_positions.quickplay_mission_position[1] + 710
-    view._widgets_by_name.story_mission_view_button.offset[2] = 0
+    local widget = view._widgets_by_name.story_mission_view_button
+    widget.offset[1] = custom_positions.story_mission_view_button_position[1]
+    widget.offset[2] = custom_positions.story_mission_view_button_position[2]
   end
 end
 
