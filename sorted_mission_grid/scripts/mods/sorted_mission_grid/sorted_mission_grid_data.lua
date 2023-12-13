@@ -5,122 +5,90 @@ mod.custom_mission_positions = {
     {
       115,
       120,
-      index = 1,
-      prefered_danger = 5
     },
     {
-      315,
+      285,
       120,
-      index = 2,
-      prefered_danger = 5
     },
     {
-      515,
+      455,
       120,
-      index = 3,
-      prefered_danger = 5
     },
     {
-      715,
+      625,
       120,
-      index = 4,
-      prefered_danger = 5
     },
     {
-      915,
+      795,
       120,
-      index = 5,
-      prefered_danger = 5
     },
     {
-      1115,
+      965,
       120,
-      index = 6,
-      prefered_danger = 5
+    },
+    {
+      1135,
+      120,
     },
     {
       115,
       320,
-      index = 7,
-      prefered_danger = 5
     },
     {
-      315,
+      285,
       320,
-      index = 8,
-      prefered_danger = 5
     },
     {
-      515,
+      455,
       320,
-      index = 9,
-      prefered_danger = 5
     },
     {
-      715,
+      625,
       320,
-      index = 10,
-      prefered_danger = 5
     },
     {
-      915,
+      795,
       320,
-      index = 11,
-      prefered_danger = 5
     },
     {
-      1115,
+      965,
       320,
-      index = 12,
-      prefered_danger = 5
     },
     {
-      515,
+      1135,
+      320,
+    },
+    {
+      455,
       520,
-      index = 13,
-      prefered_danger = 5
     },
     {
-      715,
+      625,
       520,
-      index = 14,
-      prefered_danger = 5
     },
     {
-      915,
+      795,
       520,
-      index = 15,
-      prefered_danger = 5
     },
     {
-      1115,
+      965,
       520,
-      index = 16,
-      prefered_danger = 5
     },
     {
-      515,
-      720,
-      index = 17,
-      prefered_danger = 5
+      1135,
+      520,
     },
     {
-      715,
+      455,
       720,
-      index = 18,
-      prefered_danger = 5
     },
     {
-      915,
+      625,
       720,
-      index = 19,
-      prefered_danger = 5
     },
     {
-      1115,
+      795,
       720,
-      index = 20,
-      prefered_danger = 5
     },
     flash_mission_position = {
       115,
@@ -131,9 +99,99 @@ mod.custom_mission_positions = {
       720
     },
     custom = true,
-  }
+  },
+  auric = {
+    {
+      115,
+      120,
+    },
+    {
+      315,
+      120,
+    },
+    {
+      515,
+      120,
+    },
+    {
+      715,
+      120,
+    },
+    {
+      915,
+      120,
+    },
+    {
+      1115,
+      120,
+    },
+    {
+      115,
+      320,
+    },
+    {
+      315,
+      320,
+    },
+    {
+      515,
+      320,
+    },
+    {
+      715,
+      320,
+    },
+    {
+      915,
+      320,
+    },
+    {
+      1115,
+      320,
+    },
+    {
+      515,
+      520,
+    },
+    {
+      715,
+      520,
+    },
+    {
+      915,
+      520,
+    },
+    {
+      1115,
+      520,
+    },
+    {
+      515,
+      720,
+    },
+    {
+      715,
+      720,
+    },
+    flash_mission_position = {
+      115,
+      540
+    },
+    quickplay_mission_position = {
+      115,
+      720
+    },
+    custom = true,
+  },
 }
-mod.custom_mission_positions.auric = mod.custom_mission_positions.normal
+for i, mission_position in ipairs(mod.custom_mission_positions.normal) do
+  mission_position.index = i
+  mission_position.prefered_danger = 5
+end
+for i, mission_position in ipairs(mod.custom_mission_positions.auric) do
+  mission_position.index = i
+  mission_position.prefered_danger = 5
+end
 
 mod.circumstance_value = {
   assault_01 = 14,
