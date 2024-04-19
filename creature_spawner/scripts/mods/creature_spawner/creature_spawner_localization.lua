@@ -289,25 +289,31 @@ return {
   cs_reset_combat_ability_cooldown_keybind = {
     en = "Keybind: Reset Combat Ability Cooldown",
     ["zh-cn"] = "快捷键：重置主动技能冷却",
+    ru = "Клавиша: Cброс времени восстановления боевых способностей",
   },
   cs_reset_combat_ability_cooldown_keybind_description = {
     en = "Choose the keybinding that resets the Combat Ability Cooldown in the Training Grounds.",
     ["zh-cn"] = "选择用于在训练场内重置主动技能冷却的快捷键。",
+    ru = "Выберите комбинацию клавиш, которая сбрасывает время восстановления боевых способностей на Стрельбище.",
   },
   cs_enable_training_grounds_invisibility_keybind = {
     en = "Keybind: Toggle Player Invisibility",
     ["zh-cn"] = "快捷键：开关玩家隐身",
+    ru = "Клавиша: Переключить невидимость игрока",
   },
   cs_enable_training_grounds_invisibility_keybind_description = {
     en = "Choose the keybinding that toggles invisibility in the Training Grounds.",
     ["zh-cn"] = "选择用于在训练场内开关玩家隐身的快捷键。",
+    ru = "Выберите сочетание клавиш, которое включает невидимость на Стрельбище.",
   },
   cs_enable_training_grounds_invulnerability_keybind = {
     en = "Keybind: Toggle Player Invulnerability",
     ["zh-cn"] = "快捷键：开关玩家无敌",
+    ru = "Клавиша: Переключить неуязвимость игрока",
   },
   cs_enable_training_grounds_invulnerability_keybind_description = {
     en = "Choose the keybinding that toggles invulnerability in the Training Grounds.",
     ["zh-cn"] = "选择用于在训练场内开关玩家无敌的快捷键。",
+    ru = "Выберите сочетание клавиш, которое включает неуязвимость на Стрельбище.",
   },
 }
