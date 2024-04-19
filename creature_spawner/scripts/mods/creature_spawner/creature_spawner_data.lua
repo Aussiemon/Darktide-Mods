@@ -80,7 +80,8 @@ mod.unit_categories = {
     "specialist"
   },
   cultist_grenadier = {
-    "misc"
+    "regular",
+    "specialist"
   },
   cultist_gunner = {
     "regular",
