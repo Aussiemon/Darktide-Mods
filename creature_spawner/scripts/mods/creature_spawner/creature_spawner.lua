@@ -239,13 +239,13 @@ end
 local active_trial = mod.settings["cs_active_trial"] or 0
 local trials_XYZ = mod.trials_XYZ
 local trials = mod.trials
-
 local trial_ended = false
 local trial_respawning = false
 local trial_stop_respawns = false
 local trial_despawned = false
 local trial_start_time = 0
 local trial_end_time = 0
+
 local function enemies_loop_start_func(scenario_system, player_, scenario_data_, step_data)
   local enemy_spawners = scenario_system:get_spawn_group("shooting_range_enemies")
   local spawned_units = {}
@@ -266,16 +266,16 @@ local function enemies_loop_start_func(scenario_system, player_, scenario_data_,
 
   local spawned_units_trials = {}
   for trial_name, trial_data in pairs(trials) do
-	  for position_count, spawn_data in pairs(trial_data.spawn_data) do
-		if not spawned_units_trials[trial_name] then
-			spawned_units_trials[trial_name] = {}
-		end
-		spawned_units_trials[trial_name][fake_unit] = {
-		  spawn_data = spawn_data,
-		  position_count = position_count
-		}
-		fake_unit = fake_unit + 1
-	  end
+    for position_count, spawn_data in pairs(trial_data.spawn_data) do
+      if not spawned_units_trials[trial_name] then
+        spawned_units_trials[trial_name] = {}
+      end
+      spawned_units_trials[trial_name][fake_unit] = {
+        spawn_data = spawn_data,
+        position_count = position_count
+      }
+      fake_unit = fake_unit + 1
+    end
   end
 
   step_data.units_trials = spawned_units_trials
@@ -316,193 +316,226 @@ local function enemies_loop_condition_func(scenario_system, player, scenario_dat
 
   if mod.settings["cs_enable_training_grounds_respawn"] then
     local spawned_units = step_data.units
-	local trial_units = step_data.units_trials
-	local trial_units_multi_spawn = step_data.units_trials_multi_spawn
+    local trial_units = step_data.units_trials
+    local trial_units_multi_spawn = step_data.units_trials_multi_spawn
 
-	if active_trial == 0 then
-		for unit, spawner_data in pairs(spawned_units) do
-		  if not HEALTH_ALIVE[unit] then
-			if not spawner_data.dissolve_t then
-			  spawner_data.dissolve_t = t + 2 + math.random_range(0, 1)
-			elseif spawner_data.dissolve_t < t then
-			  scenario_system:dissolve_unit(unit, t)
+    if active_trial == 0 then
+      for unit, spawner_data in pairs(spawned_units) do
+        if not HEALTH_ALIVE[unit] then
+          if not spawner_data.dissolve_t then
+            spawner_data.dissolve_t = t + 2 + math.random_range(0, 1)
+          elseif spawner_data.dissolve_t < t then
+            scenario_system:dissolve_unit(unit, t)
 
-			  spawned_units[unit] = nil
-			  spawner_data.dissolve_t = nil
-			  local spawner = spawner_data.spawner
-			  local spawner_unit = spawner:unit()
-			  local position = Unit.local_position(spawner_unit, 1)
-			  local rotation = Unit.local_rotation(spawner_unit, 1)
-			  local breed_name = spawner_data.breed_name
-			  local new_unit = scenario_system:spawn_breed_ramping(breed_name, position, rotation, t, 2, 2, nil, "aggroed")
+            spawned_units[unit] = nil
+            spawner_data.dissolve_t = nil
+            local spawner = spawner_data.spawner
+            local spawner_unit = spawner:unit()
+            local position = Unit.local_position(spawner_unit, 1)
+            local rotation = Unit.local_rotation(spawner_unit, 1)
+            local breed_name = spawner_data.breed_name
+            local new_unit = scenario_system:spawn_breed_ramping(breed_name, position, rotation, t, 2, 2, nil, "aggroed")
 
-			  Managers.event:trigger("add_world_marker_unit", "damage_indicator", new_unit)
+            Managers.event:trigger("add_world_marker_unit", "damage_indicator", new_unit)
 
-			  spawned_units[new_unit] = spawner_data
-			end
-		  end
-		end
-	else
-		local active_units = trial_units[active_trial]
-		local trial_ends_by_clear = trials[active_trial].trial_ends_by_clear
-		local trial_ends_by_time = trials[active_trial].trial_length and true or nil
-		local trial_length = trials[active_trial].trial_length
+            spawned_units[new_unit] = spawner_data
+          end
+        end
+      end
+    else
+      local active_units = trial_units[active_trial]
+      local trial_ends_by_clear = trials[active_trial].trial_ends_by_clear
+      local trial_ends_by_time = trials[active_trial].trial_length and true or nil
+      local trial_length = trials[active_trial].trial_length
+      local trial_size = 0
+      local trial_size_regular = 0
+      local trial_deaths = 0
+      local trial_deaths_regular = 0
+      local trial_no_living_multi_spawn = true
 
-		local trial_size = 0
-		local trial_size_regular = 0
-		local trial_deaths = 0
-		local trial_deaths_regular = 0
-		local trial_no_living_multi_spawn = true
-		for unit, spawner_data in pairs(active_units) do
-		  trial_size = trial_size + 1
-		  if not spawner_data.spawn_data.forced_respawn and not spawner_data.spawn_data.multi_spawn then
-			trial_size_regular = trial_size_regular + 1
-		  end
-		  if not HEALTH_ALIVE[unit] then
-			trial_deaths = trial_deaths + 1
-			if not spawner_data.spawn_data.forced_respawn and not spawner_data.spawn_data.multi_spawn then
-				trial_deaths_regular = trial_deaths_regular + 1
-			end
-		  end
-		  if spawner_data.spawn_data.multi_spawn and trial_units_multi_spawn[spawner_data] and trial_no_living_multi_spawn then
-			for multi_unit, value in pairs(trial_units_multi_spawn[spawner_data]) do
-				if HEALTH_ALIVE[multi_unit] then
-					trial_no_living_multi_spawn = false
-					break
-				end
-			end
-		  end
-		end
+      for unit, spawner_data in pairs(active_units) do
+        trial_size = trial_size + 1
+        if not spawner_data.spawn_data.forced_respawn and not spawner_data.spawn_data.multi_spawn then
+          trial_size_regular = trial_size_regular + 1
+        end
 
-		if not trial_respawning and ((trial_deaths_regular == trial_size_regular and trial_ends_by_clear) or (trial_ends_by_time and trial_start_time + trial_length < t)) then
-			trial_stop_respawns = true
-		end
-		if trial_deaths == trial_size and trial_no_living_multi_spawn and not trial_ended and not trial_respawning and (not trial_ends_by_time or (trial_start_time + trial_length < t) or trial_ends_by_clear) then
-			trial_ended = true
-			trial_end_time = t
-			if trial_ends_by_clear or trial_ends_by_time then
-				mod:echo("Trial ended in victory after " .. trial_end_time - trial_start_time .. " seconds. Restarting in 10 seconds...")
-				trial_start_time = trial_end_time + 10
-			else
-				trial_start_time = trial_end_time
-			end
-		end
-		if trial_ended and trial_start_time < t then
-			if trial_despawned then
-				trial_start_time = t
-				trial_despawned = false
-			end
-			trial_respawning = true
-			trial_stop_respawns = false
-			trial_ended = false
-			if trial_ends_by_clear or trial_ends_by_time then
-				mod:echo("Trial starts : " .. trials[active_trial].trial_name)
-			end
-		end
+        if not HEALTH_ALIVE[unit] then
+          trial_deaths = trial_deaths + 1
+          if not spawner_data.spawn_data.forced_respawn and not spawner_data.spawn_data.multi_spawn then
+            trial_deaths_regular = trial_deaths_regular + 1
+          end
+        end
 
-	    local unit_data_extension = ScriptUnit.has_extension(player.player_unit, "unit_data_system")
-		local character_state_component = unit_data_extension:read_component("character_state")
-		local disabled_character_state_component = unit_data_extension:read_component("disabled_character_state")
-		local is_knocked_down = PlayerUnitStatus.is_knocked_down(character_state_component)
-		local is_netted = PlayerUnitStatus.is_netted(disabled_character_state_component)
-		if (is_knocked_down or is_netted) and not trial_ended then
-			trial_end_time = t
-			trial_ended = true
-			mod:despawn_units()
-			if not mod.settings["cs_enable_training_grounds_invisibility"] then
-				mod:toggle_invisibility()
-			end
-			mod:echo("Trial ended in failure after " .. trial_end_time - trial_start_time .. " seconds.")
-			trial_start_time = t + 12
-		end
+        if spawner_data.spawn_data.multi_spawn
+            and trial_units_multi_spawn[spawner_data]
+            and trial_no_living_multi_spawn
+        then
+          for multi_unit, value in pairs(trial_units_multi_spawn[spawner_data]) do
+            if HEALTH_ALIVE[multi_unit] then
+              trial_no_living_multi_spawn = false
+              break
+            end
+          end
+        end
+      end
 
-		for unit, spawner_data in pairs(active_units) do
-		  local spawn_data = spawner_data.spawn_data
+      if not trial_respawning
+          and ((trial_deaths_regular == trial_size_regular and trial_ends_by_clear)
+              or (trial_ends_by_time and trial_start_time + trial_length < t)) then
+        trial_stop_respawns = true
+      end
 
-		  local multi_spawn_count = 0
-		  local multi_spawn_capped = false
-		  if spawn_data.multi_spawn and spawn_data.multi_spawn_cap and trial_units_multi_spawn[spawner_data] then
-			for multi_unit, value in pairs(trial_units_multi_spawn[spawner_data]) do
-				if not HEALTH_ALIVE[multi_unit] then
-					trial_units_multi_spawn[spawner_data][multi_unit] = nil
-				end
-			end
-			for multi_unit, value in pairs(trial_units_multi_spawn[spawner_data]) do
-				multi_spawn_count = multi_spawn_count + 1
-			end
-			if multi_spawn_count >= spawn_data.multi_spawn_cap then
-				multi_spawn_capped = true
-			end
-		  end
+      if trial_deaths == trial_size and trial_no_living_multi_spawn
+          and not trial_ended
+          and not trial_respawning
+          and (not trial_ends_by_time
+              or (trial_start_time + trial_length < t)
+              or trial_ends_by_clear)
+      then
+        trial_ended = true
+        trial_end_time = t
+        if trial_ends_by_clear or trial_ends_by_time then
+          mod:echo("Trial ended in victory after " .. trial_end_time - trial_start_time .. " seconds. Restarting in 10 seconds...")
+          trial_start_time = trial_end_time + 10
+        else
+          trial_start_time = trial_end_time
+        end
+      end
 
-		  if (not trial_stop_respawns or trial_respawning) and not trial_ended then
-		      if trial_start_time == 0 then
-				trial_start_time = t
-			  end
-			  if (not HEALTH_ALIVE[unit] and (trial_respawning or spawn_data.forced_respawn)) or (spawn_data.multi_spawn and not multi_spawn_capped and not mod.settings["cs_enable_training_grounds_invisibility"]) then
-				if not spawner_data.dissolve_t then
-				  local respawn_timer = 2
-				  if spawn_data["respawn_timer"] then
-					respawn_timer = spawn_data["respawn_timer"]
-				  end
-				  spawner_data.dissolve_t = t + respawn_timer + math.random_range(0, 0.2)
-				elseif spawner_data.dissolve_t < t then
-				  if not spawner_data.woundless and not HEALTH_ALIVE[unit] then
-					scenario_system:dissolve_unit(unit, t)
-				  end
+      if trial_ended and trial_start_time < t then
+        if trial_despawned then
+          trial_start_time = t
+          trial_despawned = false
+        end
+        trial_respawning = true
+        trial_stop_respawns = false
+        trial_ended = false
+        if trial_ends_by_clear or trial_ends_by_time then
+          mod:echo("Trial starts : " .. trials[active_trial].trial_name)
+        end
+      end
 
-				  active_units[unit] = nil
-				  spawner_data.dissolve_t = nil
-				  local wanted_spawn_id = spawn_data["xyz_id"]
-				  if spawn_data["xyz_id_range"] then
-					random_spawn_id = math.random(0, spawn_data["xyz_id_range"])
-					local position = Vector3(trials_XYZ[wanted_spawn_id + random_spawn_id].x, trials_XYZ[wanted_spawn_id + random_spawn_id].y, trials_XYZ[wanted_spawn_id + random_spawn_id].z)
-					local player_position = Unit.local_position(player.player_unit, 1)
-					if Vector3.distance(position, player_position) < 5.5 then
-						if random_spawn_id == spawn_data["xyz_id_range"] then
-							random_spawn_id = 0
-						else
-							random_spawn_id = random_spawn_id + 1
-						end
-					end
-					wanted_spawn_id = wanted_spawn_id + random_spawn_id
-				  end
-				  local position = Vector3(trials_XYZ[wanted_spawn_id].x, trials_XYZ[wanted_spawn_id].y, trials_XYZ[wanted_spawn_id].z)
-				  local rotation = Quaternion.axis_angle(Vector3(0,0,1), math.rad(trials_XYZ[wanted_spawn_id].rot))
-				  local breed_name = spawn_data.breed_name
-				  if breed_name == "random_special" then
-					breed_name = mod.specialist_units[math.random(1, #(mod.specialist_units))]
-				  end
-				  local new_unit = unit
-				  if (breed_name == "chaos_plague_ogryn" and spawn_data.weakened) or breed_name == "chaos_spawn" or breed_name == "chaos_beast_of_nurgle" or breed_name == "chaos_daemonhost" or breed_name == "chaos_poxwalker_bomber" or breed_name == "renegade_twin_captain" or breed_name == "renegade_twin_captain_two" then
-				  	local health_modifier = 1
-					if spawn_data.weakened then
-						health_modifier = 0.4
-					end
-					new_unit = Managers.state.minion_spawn:spawn_minion(breed_name, position, rotation, 2, "aggroed", player.player_unit, nil, nil, nil, nil, health_modifier)
-					spawner_data.woundless = true
-					active_units[new_unit] = spawner_data
-				  else
-					new_unit = scenario_system:spawn_breed_ramping(breed_name, position, rotation, t, 2, 2, nil, "aggroed")
-					spawner_data.woundless = false
-					--Managers.event:trigger("add_world_marker_unit", "damage_indicator", new_unit)
+      local unit_data_extension = ScriptUnit.has_extension(player.player_unit, "unit_data_system")
+      local character_state_component = unit_data_extension:read_component("character_state")
+      local disabled_character_state_component = unit_data_extension:read_component("disabled_character_state")
+      local is_knocked_down = PlayerUnitStatus.is_knocked_down(character_state_component)
+      local is_netted = PlayerUnitStatus.is_netted(disabled_character_state_component)
 
-					active_units[new_unit] = spawner_data
-				  end
-				  if spawn_data.multi_spawn then
-					if not trial_units_multi_spawn[spawner_data] then
-						trial_units_multi_spawn[spawner_data] = {}
-					end
-					trial_units_multi_spawn[spawner_data][new_unit] = 1
-				  end
-				end
-			  end
-		  end
-		end
-		if trial_deaths_regular == 0 then
-			trial_respawning = false
-		end
-	end
+      if (is_knocked_down or is_netted) and not trial_ended then
+        trial_end_time = t
+        trial_ended = true
+        mod:despawn_units()
+        if not mod.settings["cs_enable_training_grounds_invisibility"] then
+          mod:toggle_invisibility()
+        end
+        mod:echo("Trial ended in failure after " .. trial_end_time - trial_start_time .. " seconds.")
+        trial_start_time = t + 12
+      end
+
+      for unit, spawner_data in pairs(active_units) do
+        local spawn_data = spawner_data.spawn_data
+
+        local multi_spawn_count = 0
+        local multi_spawn_capped = false
+        if spawn_data.multi_spawn and spawn_data.multi_spawn_cap and trial_units_multi_spawn[spawner_data] then
+          for multi_unit, value in pairs(trial_units_multi_spawn[spawner_data]) do
+            if not HEALTH_ALIVE[multi_unit] then
+              trial_units_multi_spawn[spawner_data][multi_unit] = nil
+            end
+          end
+
+          for multi_unit, value in pairs(trial_units_multi_spawn[spawner_data]) do
+            multi_spawn_count = multi_spawn_count + 1
+          end
+
+          if multi_spawn_count >= spawn_data.multi_spawn_cap then
+            multi_spawn_capped = true
+          end
+        end
+
+        if (not trial_stop_respawns or trial_respawning) and not trial_ended then
+          if trial_start_time == 0 then
+            trial_start_time = t
+          end
+
+          if (not HEALTH_ALIVE[unit] and (trial_respawning or spawn_data.forced_respawn))
+              or (spawn_data.multi_spawn
+                  and not multi_spawn_capped
+                  and not mod.settings["cs_enable_training_grounds_invisibility"])
+          then
+            if not spawner_data.dissolve_t then
+              local respawn_timer = 2
+              if spawn_data["respawn_timer"] then
+                respawn_timer = spawn_data["respawn_timer"]
+              end
+              spawner_data.dissolve_t = t + respawn_timer + math.random_range(0, 0.2)
+            elseif spawner_data.dissolve_t < t then
+              if not spawner_data.woundless and not HEALTH_ALIVE[unit] then
+                scenario_system:dissolve_unit(unit, t)
+              end
+
+              active_units[unit] = nil
+              spawner_data.dissolve_t = nil
+              local wanted_spawn_id = spawn_data["xyz_id"]
+              if spawn_data["xyz_id_range"] then
+                local random_spawn_id = math.random(0, spawn_data["xyz_id_range"])
+                local position = Vector3(trials_XYZ[wanted_spawn_id + random_spawn_id].x, trials_XYZ[wanted_spawn_id + random_spawn_id].y, trials_XYZ[wanted_spawn_id + random_spawn_id].z)
+                local player_position = Unit.local_position(player.player_unit, 1)
+                if Vector3.distance(position, player_position) < 5.5 then
+                  if random_spawn_id == spawn_data["xyz_id_range"] then
+                    random_spawn_id = 0
+                  else
+                    random_spawn_id = random_spawn_id + 1
+                  end
+                end
+                wanted_spawn_id = wanted_spawn_id + random_spawn_id
+              end
+
+              local position = Vector3(trials_XYZ[wanted_spawn_id].x, trials_XYZ[wanted_spawn_id].y, trials_XYZ[wanted_spawn_id].z)
+              local rotation = Quaternion.axis_angle(Vector3(0,0,1), math.rad(trials_XYZ[wanted_spawn_id].rot))
+              local breed_name = spawn_data.breed_name
+              if breed_name == "random_special" then
+                breed_name = mod.specialist_units[math.random(1, #(mod.specialist_units))]
+              end
+
+              local new_unit
+              if (breed_name == "chaos_plague_ogryn" and spawn_data.weakened)
+                  or breed_name == "chaos_spawn"
+                  or breed_name == "chaos_beast_of_nurgle"
+                  or breed_name == "chaos_daemonhost"
+                  or breed_name == "chaos_poxwalker_bomber"
+                  or breed_name == "renegade_twin_captain"
+                  or breed_name == "renegade_twin_captain_two"
+              then
+                local health_modifier = 1
+                if spawn_data.weakened then
+                  health_modifier = 0.4
+                end
+
+                new_unit = Managers.state.minion_spawn:spawn_minion(breed_name, position, rotation, 2, "aggroed", player.player_unit, nil, nil, nil, nil, health_modifier)
+                spawner_data.woundless = true
+                active_units[new_unit] = spawner_data
+              else
+                new_unit = scenario_system:spawn_breed_ramping(breed_name, position, rotation, t, 2, 2, nil, "aggroed")
+                spawner_data.woundless = false
+                --Managers.event:trigger("add_world_marker_unit", "damage_indicator", new_unit)
+                active_units[new_unit] = spawner_data
+              end
+
+              if spawn_data.multi_spawn then
+                if not trial_units_multi_spawn[spawner_data] then
+                  trial_units_multi_spawn[spawner_data] = {}
+                end
+                trial_units_multi_spawn[spawner_data][new_unit] = 1
+              end
+            end
+          end
+        end
+      end
+      if trial_deaths_regular == 0 then
+        trial_respawning = false
+      end
+    end
   end
 end
 
@@ -673,9 +706,9 @@ mod.despawn_units = function(self)
     mod:echo("Despawning all units.")
   end
   if active_trial ~= 0 and not trial_ended then
-	mod:echo("Trial ended via manual despawning.")
-	trial_ended = true
-	trial_despawned = true
+    mod:echo("Trial ended via manual despawning.")
+    trial_ended = true
+    trial_despawned = true
   end
 end
 
@@ -788,21 +821,21 @@ mod.previous_trial = function()
   mod:despawn_units()
   active_trial = active_trial - 1
   if active_trial == 0 then
-	if not mod.settings["cs_enable_training_grounds_invisibility"] then
-		mod:toggle_invisibility()
-	end
-	mod:echo("Trial terminated.")
+    if not mod.settings["cs_enable_training_grounds_invisibility"] then
+      mod:toggle_invisibility()
+    end
+    mod:echo("Trial terminated.")
   else
     if active_trial < 0 then
-	  local available_trials = 0
-	  for _, trial in pairs(trials) do
-		available_trials = available_trials + 1
+      local available_trials = 0
+      for _, trial in pairs(trials) do
+        available_trials = available_trials + 1
       end
-	  active_trial = available_trials
-	end
+      active_trial = available_trials
+    end
     trial_respawning = true
-	trial_start_time = 0
-	mod:echo("New trial : " .. trials[active_trial].trial_name)
+    trial_start_time = 0
+    mod:echo("New trial : " .. trials[active_trial].trial_name)
   end
   mod:set("cs_active_trial", active_trial, false)
 end
@@ -812,19 +845,19 @@ mod.next_trial = function()
   mod:despawn_units()
   local available_trials = 0
   for _, trial in pairs(trials) do
-	available_trials = available_trials + 1
+    available_trials = available_trials + 1
   end
   active_trial = active_trial + 1
   if active_trial > available_trials then
-	active_trial = 0
-	if not mod.settings["cs_enable_training_grounds_invisibility"] then
-		mod:toggle_invisibility()
-	end
-	mod:echo("Trial terminated.")
+    active_trial = 0
+    if not mod.settings["cs_enable_training_grounds_invisibility"] then
+      mod:toggle_invisibility()
+    end
+    mod:echo("Trial terminated.")
   else
     trial_respawning = true
-	trial_start_time = 0
-	mod:echo("New trial : " .. trials[active_trial].trial_name)
+    trial_start_time = 0
+    mod:echo("New trial : " .. trials[active_trial].trial_name)
   end
   mod:set("cs_active_trial", active_trial, false)
 end
@@ -834,14 +867,14 @@ mod.set_trial = function()
   mod:despawn_units()
   active_trial = mod.settings["cs_active_trial"]
   if active_trial == 0 then
-	if not mod.settings["cs_enable_training_grounds_invisibility"] then
-		mod:toggle_invisibility()
-	end
-	mod:echo("Trial terminated.")
+    if not mod.settings["cs_enable_training_grounds_invisibility"] then
+      mod:toggle_invisibility()
+    end
+    mod:echo("Trial terminated.")
   else
     trial_respawning = true
-	trial_start_time = 0
-	mod:echo("New trial : " .. trials[active_trial].trial_name)
+    trial_start_time = 0
+    mod:echo("New trial : " .. trials[active_trial].trial_name)
   end
 end
 
