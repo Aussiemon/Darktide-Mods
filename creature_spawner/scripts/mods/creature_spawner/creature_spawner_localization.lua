@@ -318,20 +318,26 @@ return {
   },
   cs_active_trial = {
     en = "Current Trial",
+    ["zh-cn"] = "当前试炼",
   },
   cs_active_trial_description = {
     en = "Choose the current Training Grounds trial. None will result in regular Training Grounds spawns.",
+    ["zh-cn"] = "选择当前的训练场试炼。选择 None 则会生成标准怪物。",
   },
   cs_previous_trial_keybind = {
     en = "Keybind: Previous Trial",
+    ["zh-cn"] = "快捷键：上一个试炼",
   },
   cs_previous_trial_keybind_description = {
     en = "Cycles backward through potential trials.",
+    ["zh-cn"] = "切换到上一个可用的试炼",
   },
   cs_next_trial_keybind = {
     en = "Keybind: Next Trial",
+    ["zh-cn"] = "快捷键：下一个试炼",
   },
   cs_next_trial_keybind_description = {
     en = "Cycles through potential trials.",
+    ["zh-cn"] = "切换到下一个可用的试炼",
   },
 }
