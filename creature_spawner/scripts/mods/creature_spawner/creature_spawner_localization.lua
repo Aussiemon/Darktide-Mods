@@ -316,4 +316,22 @@ return {
     ["zh-cn"] = "选择用于在训练场内开关玩家无敌的快捷键。",
     ru = "Выберите сочетание клавиш, которое включает неуязвимость на Стрельбище.",
   },
+  cs_active_trial = {
+    en = "Current Trial",
+  },
+  cs_active_trial_description = {
+    en = "Choose the current Training Grounds trial. None will result in regular Training Grounds spawns.",
+  },
+  cs_previous_trial_keybind = {
+    en = "Keybind: Previous Trial",
+  },
+  cs_previous_trial_keybind_description = {
+    en = "Cycles backward through potential trials.",
+  },
+  cs_next_trial_keybind = {
+    en = "Keybind: Next Trial",
+  },
+  cs_next_trial_keybind_description = {
+    en = "Cycles through potential trials.",
+  },
 }

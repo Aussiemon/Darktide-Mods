@@ -145,6 +145,8 @@ mod.unit_categories = {
   },
 }
 
+mod:io_dofile("creature_spawner/scripts/mods/creature_spawner/creature_spawner_trials")
+
 local mod_data = {
   name = mod:localize("mod_name"),
   description = mod:localize("mod_description"),
@@ -152,8 +154,24 @@ local mod_data = {
   localize = false,
 }
 
+local cs_active_trial_options = {
+	{ text = "None", value = 0 },
+}
+for id, trial in pairs(mod.trials) do
+	table.insert(cs_active_trial_options, {
+		text = trial.trial_name,
+		value = id,
+	})
+end
+
 mod_data.options = {
   widgets = { -- Widget settings for the mod options menu
+	{ -- Select the active Trial
+	  ["setting_id"] = "cs_active_trial",
+	  ["type"] = "dropdown",
+	  ["default_value"] = 0,
+	  ["options"] = cs_active_trial_options,
+	},
     { -- Selected list of available spawn units
       ["setting_id"] = "cs_unit_list",
       ["type"] = "dropdown",
@@ -201,7 +219,7 @@ mod_data.options = {
       ["type"] = "checkbox",
       ["default_value"] = true -- Default first option is enabled. In this case true
     },
-    
+
     { -- Keybind for toggling player invisibility
       ["setting_id"] = "cs_enable_training_grounds_invisibility_keybind",
       ["type"] = "keybind",
@@ -250,7 +268,7 @@ mod_data.options = {
       ["default_value"] = {},
       ["function_name"] = "despawn_units"
     },
-    
+
     { -- Keybind to spawn first saved unit
       ["setting_id"] = "cs_spawn_saved_unit_one_keybind",
       ["type"] = "keybind",
@@ -275,7 +293,7 @@ mod_data.options = {
       ["default_value"] = {},
       ["function_name"] = "spawn_saved_unit_three"
     },
-    
+
     { -- Keybind to heal the player
       ["setting_id"] = "cs_heal_player_keybind",
       ["type"] = "keybind",
@@ -307,6 +325,22 @@ mod_data.options = {
       ["keybind_type"] = "function_call",
       ["default_value"] = {},
       ["function_name"] = "reset_combat_ability_cooldown"
+    },
+	{ -- Keybind to switch to the previous trial
+      ["setting_id"] = "cs_previous_trial_keybind",
+      ["type"] = "keybind",
+      ["keybind_trigger"] = "pressed",
+      ["keybind_type"] = "function_call",
+      ["default_value"] = {},
+      ["function_name"] = "previous_trial"
+    },
+	{ -- Keybind to switch to the next trial
+      ["setting_id"] = "cs_next_trial_keybind",
+      ["type"] = "keybind",
+      ["keybind_trigger"] = "pressed",
+      ["keybind_type"] = "function_call",
+      ["default_value"] = {},
+      ["function_name"] = "next_trial"
     },
   }
 }
