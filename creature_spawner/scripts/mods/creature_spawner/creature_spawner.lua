@@ -217,12 +217,12 @@ end
 local function add_unique_buff(unit, buff_name, scenario_data, t)
   scenario_data.unique_buffs = scenario_data.unique_buffs or {}
   local buff_extension = ScriptUnit.extension(unit, "buff_system")
-  local _, buff_id, component_index = buff_extension:add_externally_controlled_buff(buff_name, t)
 
   if not buff_extension then
     return
   end
 
+  local _, buff_id, component_index = buff_extension:add_externally_controlled_buff(buff_name, t)
   local buff_data = {
     buff_id = buff_id,
     component_index = component_index
