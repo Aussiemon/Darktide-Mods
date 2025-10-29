@@ -523,7 +523,8 @@ local function enemies_loop_condition_func(scenario_system, player, scenario_dat
 
                 local spawn_params = {
                   optional_aggro_state = "aggroed",
-                  optional_health_modifier = health_modifier
+                  optional_target_unit = player.player_unit,
+                  optional_health_modifier = health_modifier,
                 }
                 new_unit = Managers.state.minion_spawn:spawn_minion(breed_name, position, rotation, 2, spawn_params)
                 spawner_data.woundless = true
