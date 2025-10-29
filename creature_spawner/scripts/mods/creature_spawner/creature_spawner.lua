@@ -521,7 +521,12 @@ local function enemies_loop_condition_func(scenario_system, player, scenario_dat
                   health_modifier = 0.4
                 end
 
-                new_unit = Managers.state.minion_spawn:spawn_minion(breed_name, position, rotation, 2, "aggroed", player.player_unit, nil, nil, nil, nil, health_modifier)
+                local spawn_params = {
+                  optional_aggro_state = "aggroed",
+                  optional_target_unit = player.player_unit,
+                  optional_health_modifier = health_modifier,
+                }
+                new_unit = Managers.state.minion_spawn:spawn_minion(breed_name, position, rotation, 2, spawn_params)
                 spawner_data.woundless = true
                 active_units[new_unit] = spawner_data
               else
