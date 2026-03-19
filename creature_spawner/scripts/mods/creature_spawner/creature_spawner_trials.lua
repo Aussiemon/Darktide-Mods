@@ -1468,6 +1468,21 @@ mod.trials = {
     }
   },
   {
+    ["trial_name"] = "Boss rush - Ogryn Pack Master",
+    ["trial_ends_by_clear"] = true,
+    ["spawn_data"] = {
+      {["xyz_id"] = 233, ["breed_name"] = "chaos_ogryn_houndmaster", ["respawn_timer"] = 15},
+      {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 4, ["respawn_timer"] = 8},
+      {["xyz_id"] = 225, ["breed_name"] = "cultist_melee", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 15, ["respawn_timer"] = 2},
+      {["xyz_id"] = 225, ["breed_name"] = "cultist_assault", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 6, ["respawn_timer"] = 5},
+      {["xyz_id"] = 225, ["breed_name"] = "chaos_ogryn_bulwark", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 2, ["respawn_timer"] = 20},
+      {["xyz_id"] = 225, ["breed_name"] = "cultist_berzerker", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 3, ["respawn_timer"] = 10},
+      {["xyz_id"] = 225, ["breed_name"] = "cultist_shocktrooper", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 3, ["respawn_timer"] = 15},
+      {["xyz_id"] = 225, ["breed_name"] = "cultist_gunner", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 2, ["respawn_timer"] = 20},
+      {["xyz_id"] = 225, ["breed_name"] = "chaos_armored_hound", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 40, ["respawn_timer"] = 0.75},
+    }
+  },
+  {
     ["trial_name"] = "Hunting Grounds",
     ["trial_length"] = 45,
     ["spawn_data"] = {

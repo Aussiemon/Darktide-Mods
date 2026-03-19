@@ -197,54 +197,6 @@ end
 -- ##########################################################
 -- ################## Grim's EmptyShootingRange #############
 
-local function unit_has_buff(unit, name)
-  local buff_extension = ScriptUnit.extension(unit, "buff_system")
-  if buff_extension then
-    local buffs = buff_extension:buffs()
-
-    for i = 1, #buffs do
-      local template_name = buffs[i]:template_name()
-
-      if template_name == name then
-        return true
-      end
-    end
-  end
-
-  return false
-end
-
-local function add_unique_buff(unit, buff_name, scenario_data, t)
-  scenario_data.unique_buffs = scenario_data.unique_buffs or {}
-  local buff_extension = ScriptUnit.extension(unit, "buff_system")
-
-  if not buff_extension then
-    return
-  end
-
-  local _, buff_id, component_index = buff_extension:add_externally_controlled_buff(buff_name, t)
-  local buff_data = {
-    buff_id = buff_id,
-    component_index = component_index
-  }
-  scenario_data.unique_buffs[buff_name] = buff_data
-end
-
-local function remove_unique_buff(unit, buff_name, scenario_data)
-  if scenario_data.unique_buffs then
-    local buff_data = scenario_data.unique_buffs[buff_name]
-    local buff_extension = ScriptUnit.extension(unit, "buff_system")
-
-    if not buff_extension then
-      return
-    end
-
-    buff_extension:remove_externally_controlled_buff(buff_data.buff_id, buff_data.component_index)
-
-    scenario_data.unique_buffs[buff_name] = nil
-  end
-end
-
 local active_trial = mod.settings["cs_active_trial"] or 0
 local trials_XYZ = mod.trials_XYZ
 local trials = mod.trials
@@ -299,12 +251,12 @@ end
 
 local function enemies_loop_condition_func(scenario_system, player, scenario_data, step_data, t)
   if mod.settings["cs_enable_training_grounds_invisibility"] then
-    if not unit_has_buff(player.player_unit, "tg_player_unperceivable") then
-      add_unique_buff(player.player_unit, "tg_player_unperceivable", scenario_data, t)
+    if not scenario_system:has_scenario_buff(player.player_unit, "tg_player_unperceivable") then
+      scenario_system:add_scenario_buff(player.player_unit, "tg_player_unperceivable", scenario_data, t)
     end
   else
-    if unit_has_buff(player.player_unit, "tg_player_unperceivable") then
-      remove_unique_buff(player.player_unit, "tg_player_unperceivable", scenario_data)
+    if scenario_system:has_scenario_buff(player.player_unit, "tg_player_unperceivable") then
+      scenario_system:remove_scenario_buff(player.player_unit, "tg_player_unperceivable", scenario_data)
     end
   end
 

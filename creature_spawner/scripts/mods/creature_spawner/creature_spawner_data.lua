@@ -22,6 +22,10 @@ mod.unit_category_names = {
 }
 
 mod.unit_categories = {
+  chaos_armored_hound = {
+    "regular",
+    "specialist"
+  },
   chaos_beast_of_nurgle = {
     "regular",
     "boss"
@@ -48,6 +52,10 @@ mod.unit_categories = {
   chaos_ogryn_gunner = {
     "regular",
     "elite"
+  },
+  chaos_ogryn_houndmaster = {
+    "regular",
+    "boss"
   },
   chaos_plague_ogryn = {
     "regular",
