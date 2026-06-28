@@ -250,15 +250,12 @@ local function enemies_loop_start_func(scenario_system, player_, scenario_data_,
 end
 
 local function enemies_loop_condition_func(scenario_system, player, scenario_data, step_data, t)
-  if mod.settings["cs_enable_training_grounds_invisibility"] then
-    if not scenario_system:has_scenario_buff(player.player_unit, "tg_player_unperceivable") then
-      scenario_system:add_scenario_buff(player.player_unit, "tg_player_unperceivable", scenario_data, t)
-    end
-  else
-    if scenario_system:has_scenario_buff(player.player_unit, "tg_player_unperceivable") then
-      scenario_system:remove_scenario_buff(player.player_unit, "tg_player_unperceivable", scenario_data)
-    end
-  end
+  -- Invisibility (tg_player_unperceivable) is managed solely by our override of
+  -- the vanilla sr_unperceivable_loop step (see hook below). Doing it here too
+  -- caused a tug-of-war: the init scenario's sr_unperceivable_loop re-added the
+  -- buff every frame while this parallel step removed it, so the unperceivable
+  -- keyword toggled on/off each frame => enemies saw the player for a split
+  -- second on a loop. Single owner = no flicker.
 
   if not mod.settings["cs_enable_training_grounds_sound_muffler"] then
     Wwise.set_state("music_zone", "on")
@@ -850,12 +847,83 @@ end
 mod:hook_require(shooting_range_steps_path, function(instance)
   instance.enemies_loop.start_func = enemies_loop_start_func
   instance.enemies_loop.condition_func = enemies_loop_condition_func
+
+  -- Vanilla sr_unperceivable_loop re-adds tg_player_unperceivable EVERY frame
+  -- (it's a forever-looping step in the init scenario). That ignores our
+  -- invisibility toggle entirely, so enemies could never reliably see you, and
+  -- it fought any buff removal elsewhere => 1-frame on/off flicker.
+  --
+  -- Make this step the single owner of the buff and have it respect the toggle:
+  -- add when invisibility is on, remove when off. Runs in the init scenario, the
+  -- same context add/remove/has_scenario_buff operate on (self._current_scenario),
+  -- so the bookkeeping stays consistent.
+  if instance.sr_unperceivable_loop then
+    instance.sr_unperceivable_loop.condition_func = function(scenario_system, player, scenario_data, step_data, t)
+      local player_unit = player.player_unit
+
+      if not HEALTH_ALIVE[player_unit] then
+        return false
+      end
+
+      local buff_extension = ScriptUnit.has_extension(player_unit, "buff_system")
+      if not buff_extension then
+        return false
+      end
+
+      local want_invis = mod.settings["cs_enable_training_grounds_invisibility"]
+
+      -- Sweep-based, no stored handle. Index-tracking leaked orphan buffs: the
+      -- player unit blips not-alive during hub<->training_grounds transitions,
+      -- which dropped our tracked index without removing the buff, so a second
+      -- tg_player_unperceivable kept the keyword alive after toggling off.
+      -- Instead, every frame reconcile actual buff instances to the desired state:
+      -- invisibility on  -> ensure exactly one tg_player_unperceivable exists
+      -- invisibility off -> remove every tg_player_unperceivable (clears orphans)
+      local indices
+      local buffs_by_index = buff_extension._buffs_by_index
+      if buffs_by_index then
+        for index, buff in pairs(buffs_by_index) do
+          if buff and buff.template_name and buff:template_name() == "tg_player_unperceivable" then
+            indices = indices or {}
+            indices[#indices + 1] = index
+          end
+        end
+      end
+      local count = indices and #indices or 0
+
+      if want_invis then
+        if count == 0 then
+          buff_extension:add_externally_controlled_buff("tg_player_unperceivable", t)
+        end
+      elseif count > 0 then
+        for i = 1, count do
+          buff_extension:remove_externally_controlled_buff(indices[i], nil)
+        end
+      end
+
+      return false
+    end
+  end
 end)
 
-mod:hook_require(shooting_range_scenarios_path, function(instance)
-  if instance and instance.init and instance.init.steps and #instance.init.steps == 7 then
-    table.remove(instance.init.steps, 3)
-  end
+-- NOTE: removed the old `table.remove(instance.init.steps, 3)` here. After the
+-- patch reordered the scenario steps, index 3 is portal_loop (not the perception
+-- step it was meant to delete), so the removal both failed to fix invisibility
+-- and deleted the shooting-range portals. We now neutralize the perception step
+-- by identity above instead of removing it by stale index.
+
+-- Patch 1.11+ added a game-mode flag `disable_minion_perception` (true for the
+-- shooting range) which spawns every minion with perception disabled. Such a
+-- minion nulls its target every frame in MinionPerceptionExtension.update, so a
+-- force-aggro'd enemy takes a single step toward the player then stops, retrying
+-- forever. That made spawned enemies useless when invisibility was off.
+--
+-- Force perception ON for spawned minions. The tg_player_unperceivable buff
+-- (managed by our sr_unperceivable_loop override) is then the single, clean gate:
+--   invisibility on  -> player is not a valid target -> minions idle (no stutter)
+--   invisibility off -> player is a valid target      -> minions perceive & attack
+mod:hook_origin("GameModeManager", "should_disable_minion_perception", function (self)
+  return false
 end)
 
 mod:hook_origin("MinionSuppressionExtension", "_get_threshold_and_max_value", function (self)
