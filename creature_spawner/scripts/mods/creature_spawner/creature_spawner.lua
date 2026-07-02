@@ -394,6 +394,7 @@ local function enemies_loop_condition_func(scenario_system, player, scenario_dat
         trial_end_time = t
         trial_ended = true
         mod:despawn_units()
+        mod:assist_player()
         if not mod.settings["cs_enable_training_grounds_invisibility"] then
           mod:toggle_invisibility()
         end
@@ -780,13 +781,13 @@ end
 
 mod.toggle_invisibility = function()
   local new_state = not mod.settings["cs_enable_training_grounds_invisibility"]
-  mod.settings["cs_enable_training_grounds_invisibility"] = new_state
+  mod:set("cs_enable_training_grounds_invisibility", new_state, true)
   mod:echo("Invisibility: " .. (new_state and "on" or "off"))
 end
 
 mod.toggle_invulnerability = function ()
   local new_state = not mod.settings["cs_enable_training_grounds_invulnerability"]
-  mod.settings["cs_enable_training_grounds_invulnerability"] = new_state
+  mod:set("cs_enable_training_grounds_invulnerability", new_state, true)
   mod:echo("Invulnerability: " .. (new_state and "on" or "off"))
 end
 
