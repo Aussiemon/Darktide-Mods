@@ -207,6 +207,24 @@ local trial_despawned = false
 local trial_start_time = 0
 local trial_end_time = 0
 
+local function sr_unperceivable_condition_func(scenario_system, player, scenario_data, step_data, t)
+  if not ALIVE[player.player_unit] then
+    return false
+  end
+
+  if mod.settings["cs_enable_training_grounds_invisibility"] then
+    if not scenario_system:has_scenario_buff(player.player_unit, "tg_player_unperceivable") then
+      scenario_system:add_scenario_buff(player.player_unit, "tg_player_unperceivable", t)
+    end
+  else
+    if scenario_system:has_scenario_buff(player.player_unit, "tg_player_unperceivable") then
+      scenario_system:remove_scenario_buff(player.player_unit, "tg_player_unperceivable")
+    end
+  end
+
+  return false
+end
+
 local function enemies_loop_start_func(scenario_system, player_, scenario_data_, step_data)
   local enemy_spawners = scenario_system:get_spawn_group("shooting_range_enemies")
   local spawned_units = {}
@@ -250,16 +268,6 @@ local function enemies_loop_start_func(scenario_system, player_, scenario_data_,
 end
 
 local function enemies_loop_condition_func(scenario_system, player, scenario_data, step_data, t)
-  if mod.settings["cs_enable_training_grounds_invisibility"] then
-    if not scenario_system:has_scenario_buff(player.player_unit, "tg_player_unperceivable") then
-      scenario_system:add_scenario_buff(player.player_unit, "tg_player_unperceivable", scenario_data, t)
-    end
-  else
-    if scenario_system:has_scenario_buff(player.player_unit, "tg_player_unperceivable") then
-      scenario_system:remove_scenario_buff(player.player_unit, "tg_player_unperceivable", scenario_data)
-    end
-  end
-
   if not mod.settings["cs_enable_training_grounds_sound_muffler"] then
     Wwise.set_state("music_zone", "on")
   else
@@ -848,14 +856,12 @@ end
 -- #################### Hooks ###############################
 
 mod:hook_require(shooting_range_steps_path, function(instance)
+  -- Replace the enemies loop with our custom function
   instance.enemies_loop.start_func = enemies_loop_start_func
   instance.enemies_loop.condition_func = enemies_loop_condition_func
-end)
 
-mod:hook_require(shooting_range_scenarios_path, function(instance)
-  if instance and instance.init and instance.init.steps and #instance.init.steps == 7 then
-    table.remove(instance.init.steps, 3)
-  end
+  -- Replace the unperceivable loop with our custom function
+  instance.sr_unperceivable_loop.condition_func = sr_unperceivable_condition_func
 end)
 
 mod:hook_origin("MinionSuppressionExtension", "_get_threshold_and_max_value", function (self)
@@ -927,6 +933,14 @@ mod:hook("MinionVisualLoadoutExtension", "init", function (func, self, extension
   cleaned_extension_init_data.inventory.slots = cleaned_inventory_slots
 
   return func(self, extension_init_context, unit, cleaned_extension_init_data, ...)
+end)
+
+mod:hook("GameModeManager", "should_disable_minion_perception", function (func, self, ...)
+  if is_valid_game_mode() then
+    return false -- We leave this up to the invisibility toggle
+  else
+    return func(self, ...)
+  end
 end)
 
 -- ##########################################################
