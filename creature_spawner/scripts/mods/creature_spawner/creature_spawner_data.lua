@@ -7,9 +7,13 @@ mod.boss_units = {}
 mod.misc_units = {}
 mod.all_units = {}
 
+-- Units that crash commonly
 mod.breed_blacklist = {
   human = true,
   ogryn = true,
+  chaos_mutator_daemonhost = true,
+  chaos_mutator_ritualist = true,
+  sand_vortex = true,
 }
 
 mod.unit_category_names = {
@@ -22,9 +26,15 @@ mod.unit_category_names = {
 }
 
 mod.unit_categories = {
+  attack_valkyrie = {
+    "misc",
+  },
   chaos_armored_hound = {
     "regular",
     "specialist"
+  },
+  chaos_armored_infected = {
+    "regular",
   },
   chaos_beast_of_nurgle = {
     "regular",
@@ -37,6 +47,12 @@ mod.unit_categories = {
   chaos_hound = {
     "regular",
     "specialist"
+  },
+  chaos_hound_mutator = {
+    "misc",
+  },
+  chaos_lesser_mutated_poxwalker = {
+    "regular",
   },
   chaos_newly_infected = {
     "regular"
@@ -62,7 +78,7 @@ mod.unit_categories = {
     "boss"
   },
   chaos_plague_ogryn_sprayer = {
-    "misc",
+    "regular",
     "boss"
   },
   chaos_poxwalker = {
@@ -72,9 +88,25 @@ mod.unit_categories = {
     "regular",
     "specialist"
   },
+  chaos_mutator_daemonhost = { -- @TODO: unit_data crash sometimes
+    "misc",
+    "boss",
+  },
+  chaos_mutator_ritualist = {
+    "misc", -- @TODO: unit_data crash
+  },
   chaos_spawn = {
     "regular",
     "boss"
+  },
+  companion_dog = {
+    "misc", -- @TODO: unit error
+  },
+  companion_servo_skull = {
+    "misc", -- @TODO: unit error
+  },
+  cryptic = {
+    "misc", -- @TODO: unit error
   },
   cultist_assault = {
     "regular"
@@ -82,6 +114,10 @@ mod.unit_categories = {
   cultist_berzerker = {
     "regular",
     "elite"
+  },
+  cultist_captain = {
+    "misc",
+    "boss"
   },
   cultist_flamer = {
     "regular",
@@ -102,9 +138,25 @@ mod.unit_categories = {
     "regular",
     "specialist"
   },
+  cultist_mutant_mutator = {
+    "misc",
+  },
+  chaos_mutated_poxwalker = {
+    "regular",
+  },
+  cultist_ritualist = {
+    "misc",
+  },
   cultist_shocktrooper = {
     "regular",
     "elite"
+  },
+  cultist_vanguard = {
+    "regular",
+    "elite",
+  },
+  nurgle_flies = {
+    "regular",
   },
   renegade_assault = {
     "regular"
@@ -125,6 +177,9 @@ mod.unit_categories = {
     "regular",
     "specialist"
   },
+  renegade_flamer_mutator = {
+    "misc",
+  },
   renegade_grenadier = {
     "regular",
     "specialist"
@@ -140,6 +195,14 @@ mod.unit_categories = {
     "regular",
     "specialist"
   },
+  renegade_plasma_gunner = {
+    "regular",
+    "elite",
+  },
+  renegade_radio_operator = {
+    "regular",
+    "elite",
+  },
   renegade_rifleman = {
     "regular"
   },
@@ -150,6 +213,21 @@ mod.unit_categories = {
   renegade_sniper = {
     "regular",
     "specialist"
+  },
+  renegade_twin_captain = {
+    "misc",
+    "boss"
+  },
+  renegade_twin_captain_two = {
+    "misc",
+    "boss"
+  },
+  renegade_vanguard = {
+    "regular",
+    "elite",
+  },
+  sand_vortex = {
+    "misc", -- @TODO: Particle system crash
   },
 }
 
