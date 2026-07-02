@@ -163,7 +163,7 @@ local mod_data = {
 }
 
 local cs_active_trial_options = {
-  { text = "None", value = 0 },
+  { text = "cs_hero_trial_none", value = 0 },
 }
 for id, trial in pairs(mod.trials) do
   table.insert(cs_active_trial_options, {

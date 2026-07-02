@@ -415,4 +415,146 @@ return {
     ru = "Переключает на следующее испытание.",
     ["zh-tw"] = "切換到下一個可用的試煉。",
   },
+  -- Training Grounds Trials
+  cs_hero_trial_none = {
+    en = "None",
+  },
+  cs_hero_trial_50_groaners = {
+    en = "50 Groaners",
+  },
+  cs_hero_trial_50_poxwalkers = {
+    en = "50 Poxwalkers",
+  },
+  cs_hero_trial_20_scab_bruisers = {
+    en = "20 Scab Bruisers",
+  },
+  cs_hero_trial_20_dreg_bruisers = {
+    en = "20 Dreg Bruisers"
+  },
+  cs_hero_trial_20_scab_shooters_mix = {
+    en = "20 Scab Shooters Mix",
+  },
+  cs_hero_trial_20_scab_stalkers_mix = {
+    en = "20 Scab Stalkers Mix",
+  },
+  cs_hero_trial_20_dreg_stalkers_mix = {
+    en = "20 Dreg Stalkers Mix",
+  },
+  cs_hero_trial_10_scab_shotgunners = {
+    en = "10 Scab Shotgunners",
+  },
+  cs_hero_trial_10_dreg_shotgunners = {
+    en = "10 Dreg Shotgunners",
+  },
+  cs_hero_trial_8_scab_gunners = {
+    en = "8 Scab Gunners",
+  },
+  cs_hero_trial_8_dreg_gunners = {
+    en = "8 Dreg Gunners",
+  },
+  cs_hero_trial_6_maulers = {
+    en = "6 Maulers",
+  },
+  cs_hero_trial_6_scab_ragers = {
+    en = "6 Scab Ragers",
+  },
+  cs_hero_trial_6_dreg_ragers = {
+    en = "6 Dreg Ragers",
+  },
+  cs_hero_trial_4_bulwarks = {
+    en = "4 Bulwarks",
+  },
+  cs_hero_trial_4_reapers = {
+    en = "4 Reapers",
+  },
+  cs_hero_trial_4_crushers = {
+    en = "4 Crushers",
+  },
+  cs_hero_trial_melee_pressure_easy = {
+    en = "Melee Pressure - Easy",
+  },
+  cs_hero_trial_melee_pressure_normal = {
+    en = "Melee Pressure - Normal",
+  },
+  cs_hero_trial_melee_pressure_hard = {
+    en = "Melee Pressure - Hard",
+  },
+  cs_hero_trial_melee_pressure_insane = {
+    en = "Melee Pressure - Insane",
+  },
+  cs_hero_trial_ranged_pressure_easy = {
+    en = "Ranged Pressure - Easy",
+  },
+  cs_hero_trial_ranged_pressure_normal = {
+    en = "Ranged Pressure - Normal",
+  },
+  cs_hero_trial_ranged_pressure_hard = {
+    en = "Ranged Pressure - Hard",
+  },
+  cs_hero_trial_ranged_pressure_insane = {
+    en = "Ranged Pressure - Insane",
+  },
+  cs_hero_trial_mixed_pressure_easy = {
+    en = "Mixed Pressure - Easy",
+  },
+  cs_hero_trial_mixed_pressure_normal = {
+    en = "Mixed Pressure - Normal",
+  },
+  cs_hero_trial_mixed_pressure_hard = {
+    en = "Mixed Pressure - Hard",
+  },
+  cs_hero_trial_mixed_pressure_insane = {
+    en = "Mixed Pressure - Insane",
+  },
+  cs_hero_trial_boss_rush_chaos_spawn = {
+    en = "Boss Rush - Chaos Spawn",
+  },
+  cs_hero_trial_boss_rush_beast_of_nurgle = {
+    en = "Boss Rush - Beast of Nurgle",
+  },
+  cs_hero_trial_boss_rush_ogryn_pack_master = {
+    en = "Boss Rush - Ogryn Pack Master",
+  },
+  cs_hero_trial_hunting_grounds = {
+    en = "Hunting Grounds",
+  },
+  cs_hero_trial_poxburster_detonator = {
+    en = "Poxburster Detonator",
+  },
+  cs_hero_trial_laser_tag = {
+    en = "Laser Tag",
+  },
+  cs_hero_trial_2_minutes_specials_panic_easy = {
+    en = "2 Minutes Specials Panic - Easy",
+  },
+  cs_hero_trial_2_minutes_specials_panic_normal = {
+    en = "2 Minutes Specials Panic - Normal",
+  },
+  cs_hero_trial_2_minutes_specials_panic_hard = {
+    en = "2 Minutes Specials Panic - Hard",
+  },
+  cs_hero_trial_2_minutes_specials_panic_very_hard = {
+    en = "2 Minutes Specials Panic - Very Hard",
+  },
+  cs_hero_trial_2_minutes_specials_panic_insane = {
+    en = "2 Minutes Specials Panic - Insane",
+  },
+  cs_hero_trial_endless_specials_beginner = {
+    en = "Endless Specials - Beginner",
+  },
+  cs_hero_trial_endless_specials_easy = {
+    en = "Endless Specials - Easy",
+  },
+  cs_hero_trial_endless_specials_normal = {
+    en = "Endless Specials - Normal",
+  },
+  cs_hero_trial_endless_specials_hard = {
+    en = "Endless Specials - Hard",
+  },
+  cs_hero_trial_endless_specials_very_hard = {
+    en = "Endless Specials - Very Hard",
+  },
+  cs_hero_trial_endless_specials_insane = {
+    en = "Endless Specials - Insane",
+  },
 }

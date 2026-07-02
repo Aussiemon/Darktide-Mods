@@ -253,7 +253,7 @@ mod.trials_XYZ = {
 
 mod.trials = {
   {
-    ["trial_name"] = "50 groaners",
+    ["trial_name"] = "cs_hero_trial_50_groaners",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "chaos_newly_infected"},
       {["xyz_id"] = 2, ["breed_name"] = "chaos_newly_infected"},
@@ -308,7 +308,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "50 poxwalkers",
+    ["trial_name"] = "cs_hero_trial_50_poxwalkers",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "chaos_poxwalker"},
       {["xyz_id"] = 2, ["breed_name"] = "chaos_poxwalker"},
@@ -363,7 +363,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "20 scab bruisers",
+    ["trial_name"] = "cs_hero_trial_20_scab_bruisers",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "renegade_melee"},
       {["xyz_id"] = 2, ["breed_name"] = "renegade_melee"},
@@ -388,7 +388,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "20 dreg bruisers",
+    ["trial_name"] = "cs_hero_trial_20_dreg_bruisers",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "cultist_melee"},
       {["xyz_id"] = 2, ["breed_name"] = "cultist_melee"},
@@ -413,7 +413,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "20 scab shooters mix",
+    ["trial_name"] = "cs_hero_trial_20_scab_shooters_mix",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "renegade_rifleman"},
       {["xyz_id"] = 2, ["breed_name"] = "renegade_rifleman"},
@@ -440,7 +440,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "20 scab stalkers mix",
+    ["trial_name"] = "cs_hero_trial_20_scab_stalkers_mix",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "renegade_assault"},
       {["xyz_id"] = 2, ["breed_name"] = "renegade_assault"},
@@ -467,7 +467,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "20 dreg stalkers mix",
+    ["trial_name"] = "cs_hero_trial_20_dreg_stalkers_mix",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "cultist_assault"},
       {["xyz_id"] = 2, ["breed_name"] = "cultist_assault"},
@@ -494,7 +494,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "10 scab shotgunners",
+    ["trial_name"] = "cs_hero_trial_10_scab_shotgunners",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "renegade_shocktrooper"},
       {["xyz_id"] = 2, ["breed_name"] = "renegade_shocktrooper"},
@@ -509,7 +509,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "10 dreg shotgunners",
+    ["trial_name"] = "cs_hero_trial_10_dreg_shotgunners",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "cultist_shocktrooper"},
       {["xyz_id"] = 2, ["breed_name"] = "cultist_shocktrooper"},
@@ -524,7 +524,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "8 scab gunners",
+    ["trial_name"] = "cs_hero_trial_8_scab_gunners",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "renegade_gunner"},
       {["xyz_id"] = 2, ["breed_name"] = "renegade_gunner"},
@@ -537,7 +537,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "8 dreg gunners",
+    ["trial_name"] = "cs_hero_trial_8_dreg_gunners",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "cultist_gunner"},
       {["xyz_id"] = 2, ["breed_name"] = "cultist_gunner"},
@@ -550,7 +550,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "6 maulers",
+    ["trial_name"] = "cs_hero_trial_6_maulers",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "renegade_executor"},
       {["xyz_id"] = 3, ["breed_name"] = "renegade_executor"},
@@ -561,7 +561,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "6 scab ragers",
+    ["trial_name"] = "cs_hero_trial_6_scab_ragers",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "renegade_berzerker"},
       {["xyz_id"] = 3, ["breed_name"] = "renegade_berzerker"},
@@ -572,7 +572,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "6 dreg ragers",
+    ["trial_name"] = "cs_hero_trial_6_dreg_ragers",
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "cultist_berzerker"},
       {["xyz_id"] = 3, ["breed_name"] = "cultist_berzerker"},
@@ -583,7 +583,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "4 bulwarks",
+    ["trial_name"] = "cs_hero_trial_4_bulwarks",
     ["spawn_data"] = {
       {["xyz_id"] = 201, ["breed_name"] = "chaos_ogryn_bulwark"},
       {["xyz_id"] = 202, ["breed_name"] = "chaos_ogryn_bulwark"},
@@ -592,7 +592,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "4 reapers",
+    ["trial_name"] = "cs_hero_trial_4_reapers",
     ["spawn_data"] = {
       {["xyz_id"] = 201, ["breed_name"] = "chaos_ogryn_gunner"},
       {["xyz_id"] = 202, ["breed_name"] = "chaos_ogryn_gunner"},
@@ -601,7 +601,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "4 crushers",
+    ["trial_name"] = "cs_hero_trial_4_crushers",
     ["spawn_data"] = {
       {["xyz_id"] = 201, ["breed_name"] = "chaos_ogryn_executor"},
       {["xyz_id"] = 202, ["breed_name"] = "chaos_ogryn_executor"},
@@ -610,7 +610,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Melee pressure - Easy",
+    ["trial_name"] = "cs_hero_trial_melee_pressure_easy",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 300,
     ["spawn_data"] = {
@@ -652,7 +652,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Melee pressure - Normal",
+    ["trial_name"] = "cs_hero_trial_melee_pressure_normal",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 360,
     ["spawn_data"] = {
@@ -700,7 +700,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Melee pressure - Hard",
+    ["trial_name"] = "cs_hero_trial_melee_pressure_hard",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 360,
     ["spawn_data"] = {
@@ -760,7 +760,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Melee pressure - Insane",
+    ["trial_name"] = "cs_hero_trial_melee_pressure_insane",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 360,
     ["spawn_data"] = {
@@ -822,7 +822,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Ranged pressure - Easy",
+    ["trial_name"] = "cs_hero_trial_ranged_pressure_easy",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 180,
     ["spawn_data"] = {
@@ -869,7 +869,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Ranged pressure - Normal",
+    ["trial_name"] = "cs_hero_trial_ranged_pressure_normal",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 300,
     ["spawn_data"] = {
@@ -946,7 +946,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Ranged pressure - Hard",
+    ["trial_name"] = "cs_hero_trial_ranged_pressure_hard",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 300,
     ["spawn_data"] = {
@@ -1028,7 +1028,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Ranged pressure - Insane",
+    ["trial_name"] = "cs_hero_trial_ranged_pressure_insane",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 360,
     ["spawn_data"] = {
@@ -1112,7 +1112,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Mixed pressure - Easy",
+    ["trial_name"] = "cs_hero_trial_mixed_pressure_easy",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 300,
     ["spawn_data"] = {
@@ -1178,7 +1178,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Mixed pressure - Normal",
+    ["trial_name"] = "cs_hero_trial_mixed_pressure_normal",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 360,
     ["spawn_data"] = {
@@ -1260,7 +1260,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Mixed pressure - Hard",
+    ["trial_name"] = "cs_hero_trial_mixed_pressure_hard",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 360,
     ["spawn_data"] = {
@@ -1348,7 +1348,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Mixed pressure - Insane",
+    ["trial_name"] = "cs_hero_trial_mixed_pressure_insane",
     ["trial_ends_by_clear"] = true,
     ["trial_length"] = 360,
     ["spawn_data"] = {
@@ -1438,7 +1438,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Boss rush - Chaos Spawn",
+    ["trial_name"] = "cs_hero_trial_boss_rush_chaos_spawn",
     ["trial_ends_by_clear"] = true,
     ["spawn_data"] = {
       {["xyz_id"] = 233, ["breed_name"] = "chaos_spawn", ["respawn_timer"] = 15},
@@ -1453,7 +1453,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Boss rush - Beast of Nurgle",
+    ["trial_name"] = "cs_hero_trial_boss_rush_beast_of_nurgle",
     ["trial_ends_by_clear"] = true,
     ["spawn_data"] = {
       {["xyz_id"] = 233, ["breed_name"] = "chaos_beast_of_nurgle", ["respawn_timer"] = 15},
@@ -1468,7 +1468,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Boss rush - Ogryn Pack Master",
+    ["trial_name"] = "cs_hero_trial_boss_rush_ogryn_pack_master",
     ["trial_ends_by_clear"] = true,
     ["spawn_data"] = {
       {["xyz_id"] = 233, ["breed_name"] = "chaos_ogryn_houndmaster", ["respawn_timer"] = 15},
@@ -1483,7 +1483,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Hunting Grounds",
+    ["trial_name"] = "cs_hero_trial_hunting_grounds",
     ["trial_length"] = 45,
     ["spawn_data"] = {
       {["xyz_id"] = 1, ["breed_name"] = "cultist_melee"},
@@ -1528,7 +1528,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Poxburster Detonator",
+    ["trial_name"] = "cs_hero_trial_poxburster_detonator",
     ["trial_length"] = 180,
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "chaos_poxwalker_bomber", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 3, ["respawn_timer"] = 4},
@@ -1538,7 +1538,7 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "Laser Tag",
+    ["trial_name"] = "cs_hero_trial_laser_tag",
     ["trial_length"] = 120,
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "renegade_sniper", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 10, ["respawn_timer"] = 3},
@@ -1548,72 +1548,72 @@ mod.trials = {
     }
   },
   {
-    ["trial_name"] = "2 minutes Specials Panic - Easy",
+    ["trial_name"] = "cs_hero_trial_2_minutes_specials_panic_easy",
     ["trial_length"] = 120,
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 10, ["respawn_timer"] = 3.75},
     }
   },
   {
-    ["trial_name"] = "2 minutes Specials Panic - Normal",
+    ["trial_name"] = "cs_hero_trial_2_minutes_specials_panic_normal",
     ["trial_length"] = 120,
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 12, ["respawn_timer"] = 3.25},
     }
   },
   {
-    ["trial_name"] = "2 minutes Specials Panic - Hard",
+    ["trial_name"] = "cs_hero_trial_2_minutes_specials_panic_hard",
     ["trial_length"] = 120,
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 12, ["respawn_timer"] = 2.75},
     }
   },
   {
-    ["trial_name"] = "2 minutes Specials Panic - Very Hard",
+    ["trial_name"] = "cs_hero_trial_2_minutes_specials_panic_very_hard",
     ["trial_length"] = 120,
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 20, ["respawn_timer"] = 2.25},
     }
   },
   {
-    ["trial_name"] = "2 minutes Specials Panic - Insane",
+    ["trial_name"] = "cs_hero_trial_2_minutes_specials_panic_insane",
     ["trial_length"] = 120,
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 30, ["respawn_timer"] = 1.5},
     }
   },
   {
-    ["trial_name"] = "Endless Specials - Beginner",
+    ["trial_name"] = "cs_hero_trial_endless_specials_beginner",
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["respawn_timer"] = 3},
     }
   },
   {
-    ["trial_name"] = "Endless Specials - Easy",
+    ["trial_name"] = "cs_hero_trial_endless_specials_easy",
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 4, ["respawn_timer"] = 5},
     }
   },
   {
-    ["trial_name"] = "Endless Specials - Normal",
+    ["trial_name"] = "cs_hero_trial_endless_specials_normal",
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 6, ["respawn_timer"] = 4},
     }
   },
   {
-    ["trial_name"] = "Endless Specials - Hard",
+    ["trial_name"] = "cs_hero_trial_endless_specials_hard",
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 9, ["respawn_timer"] = 3.5},
     }
   },
   {
-    ["trial_name"] = "Endless Specials - Very Hard",
+    ["trial_name"] = "cs_hero_trial_endless_specials_very_hard",
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 12, ["respawn_timer"] = 3},
     }
   },
   {
-    ["trial_name"] = "Endless Specials - Insane",
+    ["trial_name"] = "cs_hero_trial_endless_specials_insane",
     ["spawn_data"] = {
       {["xyz_id"] = 217, ["breed_name"] = "random_special", ["xyz_id_range"] = 7, ["multi_spawn"] = true, ["multi_spawn_cap"] = 20, ["respawn_timer"] = 2.5},
     }
