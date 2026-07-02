@@ -380,7 +380,7 @@ local function enemies_loop_condition_func(scenario_system, player, scenario_dat
         trial_stop_respawns = false
         trial_ended = false
         if trial_ends_by_clear or trial_ends_by_time then
-          mod:echo("Trial starts : " .. trials[active_trial].trial_name)
+          mod:echo("Trial starts : " .. mod:localize(trials[active_trial].trial_name))
         end
       end
 
@@ -809,7 +809,7 @@ mod.previous_trial = function()
     end
     trial_respawning = true
     trial_start_time = 0
-    mod:echo("New trial : " .. trials[active_trial].trial_name)
+    mod:echo("New trial : " .. mod:localize(trials[active_trial].trial_name))
   end
   mod:set("cs_active_trial", active_trial, false)
 end
@@ -831,7 +831,7 @@ mod.next_trial = function()
   else
     trial_respawning = true
     trial_start_time = 0
-    mod:echo("New trial : " .. trials[active_trial].trial_name)
+    mod:echo("New trial : " .. mod:localize(trials[active_trial].trial_name))
   end
   mod:set("cs_active_trial", active_trial, false)
 end
@@ -848,7 +848,7 @@ mod.set_trial = function()
   else
     trial_respawning = true
     trial_start_time = 0
-    mod:echo("New trial : " .. trials[active_trial].trial_name)
+    mod:echo("New trial : " .. mod:localize(trials[active_trial].trial_name))
   end
 end
 
