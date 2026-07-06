@@ -30,6 +30,8 @@ local shooting_range_scenarios_path = "scripts/extension_systems/training_ground
 
 mod.settings = mod:persistent_table("settings")
 
+local KEYBIND_GUARD_WARNING_SHOWN_SETTING = "cs_keybind_guard_warning_shown"
+
 mod:io_dofile("creature_spawner/scripts/mods/creature_spawner/creature_spawner_trials")
 
 mod.breed_name_index = mod.breed_name_index or 1
@@ -62,6 +64,40 @@ end
 
 local is_server = function()
   return Managers.state and Managers.state.game_session and Managers.state.game_session:is_server()
+end
+
+local is_keybind_environment_allowed = function()
+  return is_valid_game_mode() or is_server()
+end
+
+local is_chat_input_active = function()
+  return Managers.ui and Managers.ui.chat_using_input and Managers.ui:chat_using_input()
+end
+
+local has_keybind_guard_warning_been_shown = function()
+  return mod._keybind_guard_warning_shown or mod:get(KEYBIND_GUARD_WARNING_SHOWN_SETTING)
+end
+
+local mark_keybind_guard_warning_shown = function()
+  mod._keybind_guard_warning_shown = true
+  mod:set(KEYBIND_GUARD_WARNING_SHOWN_SETTING, true)
+end
+
+local should_ignore_keybind = function()
+  if is_chat_input_active() then
+    return true
+  end
+
+  if is_keybind_environment_allowed() then
+    return false
+  end
+
+  if not has_keybind_guard_warning_been_shown() then
+    mod:echo(mod:localize("cs_keybind_guard_warning_message"))
+    mark_keybind_guard_warning_shown()
+  end
+
+  return true
 end
 
 local get_player = function()
@@ -540,7 +576,7 @@ mod.deepcopy = function(self, orig, copies)
 end
 
 mod.spawn_breed_at_cursor = function(self, breed_name)
-  if Managers.ui:chat_using_input() then
+  if should_ignore_keybind() then
     return
   end
   if not is_server() then
@@ -603,10 +639,7 @@ mod.spawn_saved_unit_three = function(self)
 end
 
 mod.next_breed = function(self)
-  if Managers.ui:chat_using_input() then
-    return
-  end
-  if not is_server() then
+  if should_ignore_keybind() then
     return
   end
 
@@ -638,10 +671,7 @@ mod.next_breed = function(self)
 end
 
 mod.previous_breed = function(self)
-  if Managers.ui:chat_using_input() then
-    return
-  end
-  if not is_server() then
+  if should_ignore_keybind() then
     return
   end
 
@@ -673,10 +703,10 @@ mod.previous_breed = function(self)
 end
 
 mod.despawn_units = function(self)
-  if Managers.ui:chat_using_input() then
+  if should_ignore_keybind() then
     return
   end
-  if is_server() and is_valid_game_mode() and Managers.state.minion_spawn then
+  if is_server() and Managers.state.minion_spawn then
     Managers.state.minion_spawn:delete_units()
     mod:echo("Despawning all units.")
   end
@@ -728,11 +758,11 @@ end
 -- ################## Grim's Utilities ######################
 
 mod.heal_player = function(self)
-  if Managers.ui:chat_using_input() then
+  if should_ignore_keybind() then
     return
   end
   local local_player_unit = get_player_unit()
-  if local_player_unit and is_valid_game_mode() then
+  if local_player_unit and is_keybind_environment_allowed() then
     local health_extension = ScriptUnit.has_extension(local_player_unit, "health_system")
     health_extension:add_heal(550, "blessing")
     health_extension:add_heal(550, "healing_station")
@@ -740,11 +770,11 @@ mod.heal_player = function(self)
 end
 
 mod.add_toughness = function(self)
-  if Managers.ui:chat_using_input() then
+  if should_ignore_keybind() then
     return
   end
   local local_player_unit = get_player_unit()
-  if local_player_unit and is_valid_game_mode() then
+  if local_player_unit and is_keybind_environment_allowed() then
     local toughness_extension = ScriptUnit.has_extension(local_player_unit, "toughness_system")
     if toughness_extension then
       toughness_extension:recover_percentage_toughness(100, true, "melee_kill")
@@ -753,11 +783,11 @@ mod.add_toughness = function(self)
 end
 
 mod.assist_player = function(self)
-  if Managers.ui:chat_using_input() then
+  if should_ignore_keybind() then
     return
   end
   local local_player_unit = get_player_unit()
-  if local_player_unit and is_valid_game_mode() then
+  if local_player_unit and is_keybind_environment_allowed() then
     local unit_data_extension = ScriptUnit.has_extension(local_player_unit, "unit_data_system")
     local character_state_component = unit_data_extension:read_component("character_state")
     local disabled_character_state_component = unit_data_extension:read_component("disabled_character_state")
@@ -772,26 +802,38 @@ mod.assist_player = function(self)
 end
 
 mod.reset_combat_ability_cooldown = function()
+  if should_ignore_keybind() then
+    return
+  end
   local local_player_unit = get_player_unit()
-  if local_player_unit and is_valid_game_mode() then
+  if local_player_unit and is_keybind_environment_allowed() then
     local ability_extension = ScriptUnit.has_extension(local_player_unit, "ability_system")
     ability_extension:reduce_ability_cooldown_percentage("combat_ability", 1)
   end
 end
 
 mod.toggle_invisibility = function()
+  if should_ignore_keybind() then
+    return
+  end
   local new_state = not mod.settings["cs_enable_training_grounds_invisibility"]
   mod:set("cs_enable_training_grounds_invisibility", new_state, true)
   mod:echo("Invisibility: " .. (new_state and "on" or "off"))
 end
 
 mod.toggle_invulnerability = function ()
+  if should_ignore_keybind() then
+    return
+  end
   local new_state = not mod.settings["cs_enable_training_grounds_invulnerability"]
   mod:set("cs_enable_training_grounds_invulnerability", new_state, true)
   mod:echo("Invulnerability: " .. (new_state and "on" or "off"))
 end
 
 mod.previous_trial = function()
+  if should_ignore_keybind() then
+    return
+  end
   trial_ended = true
   mod:despawn_units()
   active_trial = active_trial - 1
@@ -816,6 +858,9 @@ mod.previous_trial = function()
 end
 
 mod.next_trial = function()
+  if should_ignore_keybind() then
+    return
+  end
   trial_ended = true
   mod:despawn_units()
   local available_trials = 0
