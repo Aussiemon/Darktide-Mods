@@ -557,4 +557,18 @@ return {
   cs_hero_trial_endless_specials_insane = {
     en = "Endless Specials - Insane",
   },
+  cs_keybind_guard_warning_message = {
+  	en = "Creature Spawner keybinds only work in the Psykhanium or self-hosted games.",
+  	de = "Die Tastenbelegungen für den Kreaturen-Spawner funktionieren nur im Psykhanium oder in selbst gehosteten Spielen.",
+  	it = "Le scorciatoie di Creature Spawner funzionano solo nel Psykhanium o nelle partite ospitate da te.",
+  	es = "Los atajos de Creature Spawner solo funcionan en el Psykhanium o en partidas alojadas por ti.",
+  	pl = "Skróty klawiszowe Creature Spawner działają tylko w Psykhanium lub w grach hostowanych samodzielnie.",
+  	["pt-br"] = "Os atalhos do Creature Spawner só funcionam no Psykhanium ou em jogos hospedados por você.",
+  	ja = "Creature Spawner のキーバインドは、サイカニウムまたは自分がホストしているゲームでのみ機能します。",
+  	ko = "Creature Spawner 단축키는 사이카니움 또는 직접 호스트한 게임에서만 작동합니다.",
+  	["zh-cn"] = "生物生成器快捷键只能在灵能训练室或自己主办的游戏中使用。",
+  	["zh-tw"] = "怪物生成器快捷鍵只能在靈能訓練室或自行主辦的遊戲中使用。",
+  	ru = "Горячие клавиши спавнера существ работают только в Псайканиуме или в играх, где вы являетесь хостом.",
+  	fr = "Les raccourcis de Creature Spawner ne fonctionnent que dans le Psykhanium ou dans les parties que vous hébergez vous-même.",
+  },
 }
