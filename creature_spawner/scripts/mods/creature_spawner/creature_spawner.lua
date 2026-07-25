@@ -539,6 +539,15 @@ mod.deepcopy = function(self, orig, copies)
   return copy
 end
 
+-- Copy only the top level of a table, keeping the original metatable
+local shallow_copy = function(orig)
+  local copy = {}
+  for key, value in pairs(orig) do
+    copy[key] = value
+  end
+  return setmetatable(copy, getmetatable(orig))
+end
+
 mod.spawn_breed_at_cursor = function(self, breed_name)
   if Managers.ui:chat_using_input() then
     return
@@ -890,48 +899,76 @@ mod:hook_origin("MinionSuppressionExtension", "_get_threshold_and_max_value", fu
   return threshold, max_value
 end)
 
+-- Invalid loadout items that were already reported, so each item name is only logged once
+local reported_invalid_items = {}
+
+-- Remove invalid items from minion visual loadouts. The original init data is passed
+-- through untouched unless an invalid item actually has to be removed, in which case
+-- only the affected tables are copied (never the shared breed or configuration data)
 mod:hook("MinionVisualLoadoutExtension", "init", function (func, self, extension_init_context,
                                                               unit, extension_init_data, ...)
-  local cleaned_extension_init_data = mod:deepcopy(extension_init_data)
-  local inventory = cleaned_extension_init_data.inventory
+  local inventory = extension_init_data.inventory
   local inventory_slots = inventory.slots
   local item_definitions = MasterItems.get_cached()
 
-  local cleaned_inventory_slots = {}
+  local cleaned_inventory_slots
   for slot_name, item_slot_data in pairs(inventory_slots) do
     -- For non material override slots
     if not item_slot_data.is_material_override_slot then
       local items = item_slot_data.items
-      local cleaned_items = {}
+      local num_items = #items
+      local num_valid_items = 0
 
-      -- If the item exists in cached master items, add it to the new list
-      for item_index = 1, #items do
+      -- Count the items that exist in cached master items
+      for item_index = 1, num_items do
         local item_name = items[item_index]
         if item_definitions[item_name] then
-          table.insert(cleaned_items, item_name)
-        else
+          num_valid_items = num_valid_items + 1
+        elseif not reported_invalid_items[item_name] then
+          reported_invalid_items[item_name] = true
           mod:error(item_name .. " doesn't exist.")
         end
       end
 
-      -- If the new list has items, replace the old list
-      if #cleaned_items > 0 then
-        item_slot_data.items = cleaned_items
+      -- Only start copying once an invalid item has to be removed
+      if num_valid_items ~= num_items then
+        if not cleaned_inventory_slots then
+          cleaned_inventory_slots = shallow_copy(inventory_slots)
+        end
 
-      -- If all items were removed, delete the rest of the item
-      elseif #items ~= 0 then
-        item_slot_data = nil
+        -- If any items remain, replace the slot with a cleaned copy
+        if num_valid_items > 0 then
+          local cleaned_item_slot_data = shallow_copy(item_slot_data)
+          local cleaned_items = {}
+
+          for item_index = 1, num_items do
+            local item_name = items[item_index]
+            if item_definitions[item_name] then
+              table.insert(cleaned_items, item_name)
+            end
+          end
+
+          cleaned_item_slot_data.items = cleaned_items
+          cleaned_inventory_slots[slot_name] = cleaned_item_slot_data
+
+        -- If all items were removed, delete the rest of the item
+        else
+          cleaned_inventory_slots[slot_name] = nil
+        end
       end
-    end
-
-    -- If the item wasn't deleted, add it to the new slot data list
-    if item_slot_data then
-      cleaned_inventory_slots[slot_name] = item_slot_data
     end
   end
 
-  -- Replace the slots with cleaned slots
-  cleaned_extension_init_data.inventory.slots = cleaned_inventory_slots
+  -- If no items had to be removed, pass the original init data through unchanged
+  if not cleaned_inventory_slots then
+    return func(self, extension_init_context, unit, extension_init_data, ...)
+  end
+
+  -- Replace the slots with cleaned slots on shallow copies of the affected tables
+  local cleaned_extension_init_data = shallow_copy(extension_init_data)
+  local cleaned_inventory = shallow_copy(inventory)
+  cleaned_inventory.slots = cleaned_inventory_slots
+  cleaned_extension_init_data.inventory = cleaned_inventory
 
   return func(self, extension_init_context, unit, cleaned_extension_init_data, ...)
 end)
