@@ -21,8 +21,6 @@ local ret = {
 			fassert(false, file_name.." encountered an error loading the Darktide Mod Framework.")
 		end
 	end,
-	packages = {
-		"resource_packages/"..directory_name.."/"..file_name
-	},
+	packages = {},
 }
 return ret
